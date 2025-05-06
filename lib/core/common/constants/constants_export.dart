@@ -1,0 +1,2 @@
+// export 'colors'
+// export 'string'
