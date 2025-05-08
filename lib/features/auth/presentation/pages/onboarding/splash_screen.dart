@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:food_delivery/core/common/constants/colors/app_colors.dart';import 'package:food_delivery/features/auth/presentation/pages/onboarding/welcome.dart';
-import '../../../../../core/common/text_styles/app_textstyles.dart';
+import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
+import 'package:food_delivery/features/auth/presentation/pages/onboarding/welcome.dart';
+import '../../../../../core/common/constants/strings/app_string.dart';
 import '../../../../../core/common/text_styles/name_textstyles.dart';
 
 
@@ -33,6 +34,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   static const Duration _fadeDuration = Duration(milliseconds: 700);
   static const Duration _initialDelay = Duration(milliseconds: 300);
   static const Duration _finalScreenDelay = Duration(seconds: 2);
+
+  final RobotoTextStyles _textStyles = RobotoTextStyles();
 
   @override
   void initState() {
@@ -88,7 +91,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   void _navigateToNextScreen() {
     if (!mounted) return;
-    // Navigate to WelcomeScreen
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const WelcomeScreen()),
     );
@@ -105,6 +107,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -142,16 +145,16 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'SPEEDY CHOW',
-                        style: DynamicTextStyles.bold(
+                        AppStrings.appName,
+                        style: _textStyles.bold(
                           color: AppColors.white,
                           fontSize: 28,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text(
-                        'Version 2.1.0',
-                        style: DynamicTextStyles.regular(
+                        AppStrings.appVersion,
+                        style: _textStyles.regular(
                           color: AppColors.white.withOpacity(0.7),
                           fontSize: 14,
                         ),
@@ -170,12 +173,12 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 opacity: _currentStage != LoadingStage.start ? _taglineOpacityAnimation.value : 0.0,
                 duration: _fadeDuration,
                 child: Text(
-                  'As fast as lightning,\nas delicious as thunder!',
+                  AppStrings.splashTagline,
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.s16w400.copyWith(
+                  style: _textStyles.regular(
                     color: AppColors.white,
-                    height: 1.3,
-                  ),
+                    fontSize: 16,
+                  ).copyWith(height: 1.3),
                 ),
               ),
             ),

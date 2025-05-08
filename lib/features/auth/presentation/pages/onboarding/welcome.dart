@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
+import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
+
+import '../../../../../core/common/constants/strings/app_string.dart';
 import '../../../../../core/common/text_styles/name_textstyles.dart';
 import 'onboarding.dart';
 
@@ -16,6 +19,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Timer? _timer;
   static const Duration _navigationDelay = Duration(seconds: 3);
 
+  final RobotoTextStyles _textStyles = RobotoTextStyles();
+
   @override
   void initState() {
     super.initState();
@@ -28,11 +33,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   void _navigateToNextScreen() {
     if (!mounted) return;
-    // Navigate to OnboardingScreen
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const OnboardingScreen()), // MODIFIED HERE
+      MaterialPageRoute(builder: (context) => const OnboardingScreen()),
     );
-    print("Welcome screen done, navigating to Onboarding screen..."); // MODIFIED HERE
+    print("Welcome screen done, navigating to Onboarding screen...");
   }
 
   @override
@@ -44,6 +48,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -59,8 +64,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.black.withOpacity(0.2),
-                  Colors.black.withOpacity(0.6),
+                  AppColors.black.withOpacity(0.2),
+                  AppColors.black.withOpacity(0.6),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -73,24 +78,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             left: 0,
             right: 0,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(24.0)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Welcome to',
+                    AppStrings.welcomeTo,
                     textAlign: TextAlign.center,
-                    style: DynamicTextStyles.regular(
+                    style: _textStyles.regular(
                       color: AppColors.white,
                       fontSize: 20,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: AppResponsive.height(8)),
                   Text(
-                    'SPEEDY CHOW',
+                    AppStrings.appName,
                     textAlign: TextAlign.center,
-                    style: DynamicTextStyles.bold(
+                    style: _textStyles.bold(
                       color: AppColors.white,
                       fontSize: 36,
                     ),

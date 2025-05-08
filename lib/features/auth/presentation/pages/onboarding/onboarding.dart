@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
-import '../../../../../core/common/text_styles/app_textstyles.dart';
+import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
+import 'package:food_delivery/core/common/constants/strings/app_string.dart';
 import '../../../../../core/common/text_styles/name_textstyles.dart';
+import '../lets_in.dart';
 
-// TODO: Import your Login/Registration screen
-// import 'package:food_delivery/features/auth/presentation/pages/login_screen.dart'; // Example
 
-// Data model for each onboarding page
 class OnboardingItem {
   final String imagePath;
   final String title;
@@ -30,27 +29,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  // List of onboarding items
+  final RobotoTextStyles _textStyles = RobotoTextStyles();
+
   final List<OnboardingItem> _onboardingItems = [
     OnboardingItem(
-      imagePath: 'assets/images/intr1.png', // TODO: Verify asset path
-      title: 'Wide Selection',
-      subtitle: 'More than 400 restaurants nationwide.',
+      imagePath: 'assets/images/intr1.png',
+      title: AppStrings.wideSelection,
+      subtitle: AppStrings.wideSelectionSubtitle,
     ),
     OnboardingItem(
-      imagePath: 'assets/images/intr2.png', // TODO: Verify asset path
-      title: 'Fast Delivery',
-      subtitle: 'Receive goods after 10 minutes.',
+      imagePath: 'assets/images/intr3.png',
+      title: AppStrings.orderTracking,
+      subtitle: AppStrings.trackYourOrdersRealTime,
     ),
     OnboardingItem(
-      imagePath: 'assets/images/intr3.png', // TODO: Verify asset path
-      title: 'Order Tracking',
-      subtitle: 'Track your orders in real-time.',
-    ),
-    OnboardingItem(
-      imagePath: 'assets/images/intr4.png', // TODO: Verify asset path
-      title: 'Special Offers',
-      subtitle: 'Weekly deals and discounts.',
+      imagePath: 'assets/images/intr4.png',
+      title: AppStrings.specialOffers,
+      subtitle: AppStrings.specialOffersSubtitle,
     ),
   ];
 
@@ -58,10 +53,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void initState() {
     super.initState();
     _pageController.addListener(() {
-      if (_pageController.page?.round() != _currentPage) {
-        setState(() {
-          _currentPage = _pageController.page!.round();
-        });
+      final currentPage = _pageController.page?.round();
+      if (currentPage != null && currentPage != _currentPage) {
+        if (mounted) {
+          setState(() { _currentPage = currentPage; });
+        }
       }
     });
   }
@@ -72,83 +68,79 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
+
+  void _navigateToLetsInScreen() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const LetsInScreen()),
+    );
+    print("Navigating to Let's In Screen...");
+  }
+
   void _onNextPressed() {
-    if (_currentPage < _onboardingItems.length - 1) {
+    bool isLastContentPage = _currentPage == _onboardingItems.length - 1;
+
+    if (isLastContentPage) {
+      _navigateToLetsInScreen();
+    } else {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-    } else {
-      // Last page: Navigate to Login/Registration or main app
-      _navigateToAuthScreen();
     }
   }
 
   void _onSkipPressed() {
-    // Navigate to Login/Registration or main app
-    _navigateToAuthScreen();
+    _navigateToLetsInScreen();
   }
-
-  void _navigateToAuthScreen() {
-    // TODO: Implement actual navigation
-    // Navigator.of(context).pushReplacement(
-    //   MaterialPageRoute(builder: (context) => const LoginScreen()), // Replace with your auth screen
-    // );
-    print("Navigating to Auth Screen...");
-  }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white, // Assuming a white background for pages
+      backgroundColor: AppColors.white,
       body: SafeArea(
         child: Column(
           children: [
-            // Skip Button (Top Right - for first 3 pages)
-            if (_currentPage < _onboardingItems.length -1) // Show skip only if not on the last page for the "Next" button
-              Align(
-                alignment: Alignment.topRight,
+            Align(
+              alignment: Alignment.topRight,
+              child: Visibility(
+                visible: _currentPage < _onboardingItems.length - 1,
+                maintainSize: true,
+                maintainAnimation: true,
+                maintainState: true,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 16.0, right: 24.0),
+                  padding: EdgeInsets.only(top: AppResponsive.height(16.0), right: AppResponsive.width(24.0)),
                   child: TextButton(
                     onPressed: _onSkipPressed,
                     child: Text(
-                      'Skip',
-                      style: DynamicTextStyles.regular( // Or AppTextStyles.s16w400
-                        color: AppColors.primary500, // Or a neutral color
+                      AppStrings.skip,
+                      style: _textStyles.regular(
+                        color: AppColors.primary500,
                         fontSize: 16,
                       ),
                     ),
                   ),
                 ),
-              )
-            else
-              const SizedBox(height: 50), // Placeholder for consistent spacing when skip is not shown
+              ),
+            ),
 
-            // PageView for Onboarding Content
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
                 itemCount: _onboardingItems.length,
-                onPageChanged: (int page) {
-                  setState(() {
-                    _currentPage = page;
-                  });
-                },
                 itemBuilder: (context, index) {
-                  return _buildOnboardingPage(_onboardingItems[index]);
+                  return _buildContentPage(_onboardingItems[index]);
                 },
               ),
             ),
 
-            // Page Indicator
             _buildPageIndicator(),
-            const SizedBox(height: 30),
+            SizedBox(height: AppResponsive.height(30)),
 
-            // Buttons Area
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppResponsive.width(24.0),
+                vertical: AppResponsive.height(20.0),
+              ),
               child: _buildBottomButtons(),
             ),
           ],
@@ -157,48 +149,50 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // Widget to build each onboarding page's content
-  Widget _buildOnboardingPage(OnboardingItem item) {
+  Widget _buildContentPage(OnboardingItem item) {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(AppResponsive.width(24.0)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const Spacer(flex: 1),
           Expanded(
-            flex: 3, // Give more space to image
+            flex: 4,
             child: Image.asset(
               item.imagePath,
-              fit: BoxFit.contain, // Adjust fit as needed
-              errorBuilder: (context, error, stackTrace) => const Icon(Icons.image_not_supported, size: 100, color: AppColors.neutral300),
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => Icon(
+                Icons.image_not_supported,
+                size: AppResponsive.height(100),
+                color: AppColors.neutral300,
+              ),
             ),
           ),
-          const SizedBox(height: 40),
+          SizedBox(height: AppResponsive.height(40)),
           Text(
             item.title,
             textAlign: TextAlign.center,
-            style: DynamicTextStyles.semiBold( // Or AppTextStyles.s22w600
-              color: AppColors.primary500, // Figma shows title in primary color
+            style: _textStyles.semiBold(
+              color: AppColors.primary500,
               fontSize: 22,
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: AppResponsive.height(16)),
           Text(
             item.subtitle,
             textAlign: TextAlign.center,
-            style: DynamicTextStyles.regular( // Or AppTextStyles.s16w400
-              color: AppColors.neutral700, // Figma shows subtitle in a neutral color
+            style: _textStyles.regular(
+              color: AppColors.neutral700,
               fontSize: 16,
-              height: 1.4, // Line height
-            ),
+            ).copyWith(height: 1.4),
           ),
-          const Spacer(flex: 1), // Pushes content up a bit
+          const Spacer(flex: 2),
         ],
       ),
     );
   }
 
-  // Widget to build the page indicator dots
   Widget _buildPageIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -206,108 +200,37 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         _onboardingItems.length,
             (index) => AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-          height: 8.0,
-          width: _currentPage == index ? 24.0 : 8.0, // Active dot is wider
+          margin: EdgeInsets.symmetric(horizontal: AppResponsive.width(4.0)),
+          height: AppResponsive.height(8.0),
+          width: _currentPage == index ? AppResponsive.width(24.0) : AppResponsive.width(8.0),
           decoration: BoxDecoration(
-            color: _currentPage == index ? AppColors.primary500 : AppColors.primary200, // Active vs Inactive color
-            borderRadius: BorderRadius.circular(4.0),
+            color: _currentPage == index ? AppColors.primary500 : AppColors.primary200,
+            borderRadius: BorderRadius.circular(AppResponsive.height(4.0)),
           ),
         ),
       ),
     );
   }
 
-  // Widget to build the bottom buttons (Next/Start Enjoying, Skip/Login)
   Widget _buildBottomButtons() {
-    bool isLastPage = _currentPage == _onboardingItems.length - 1;
+    bool isLastContentPage = _currentPage == _onboardingItems.length - 1;
 
-    if (isLastPage) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary500,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25), // Rounded button
-                ),
-              ),
-              onPressed: _navigateToAuthScreen, // Changed from _onNextPressed for clarity
-              child: Text(
-                'Start enjoying',
-                style: AppTextStyles.s18w600.copyWith(color: AppColors.white),
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          TextButton(
-            onPressed: _navigateToAuthScreen,
-            child: Text(
-              'Login / Registration',
-              style: DynamicTextStyles.regular( // Or AppTextStyles.s16w400
-                color: AppColors.primary600,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ],
-      );
-    } else {
-      // Buttons for first 3 pages
-      return SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary500,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25), // Rounded button
-            ),
-          ),
-          onPressed: _onNextPressed,
-          child: Text(
-            'Next',
-            style: AppTextStyles.s18w600.copyWith(color: AppColors.white),
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary500,
+          padding: EdgeInsets.symmetric(vertical: AppResponsive.height(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppResponsive.height(25)),
           ),
         ),
-      );
-      // The Skip button is now at the top right for the first 3 pages.
-      // If you prefer it at the bottom:
-      /*
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TextButton(
-            onPressed: _onSkipPressed,
-            child: Text(
-              'Skip',
-              style: DynamicTextStyles.regular(
-                color: AppColors.primary500,
-                fontSize: 16,
-              ),
-            ),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary500,
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
-              ),
-            ),
-            onPressed: _onNextPressed,
-            child: Text(
-              'Next',
-              style: AppTextStyles.s18w600.copyWith(color: AppColors.white),
-            ),
-          ),
-        ],
-      );
-      */
-    }
+        onPressed: _onNextPressed,
+        child: Text(
+          isLastContentPage ? AppStrings.startEnjoying : AppStrings.next,
+          style: _textStyles.semiBold(color: AppColors.white, fontSize: 18),
+        ),
+      ),
+    );
   }
 }
