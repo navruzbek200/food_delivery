@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
-import 'package:food_delivery/core/common/constants/strings/app_string.dart'; // Verify path
+import 'package:food_delivery/core/common/constants/strings/app_string.dart';
 
-// Import SignUpScreen for navigation
 import 'package:food_delivery/features/auth/presentation/pages/signup/sign_up.dart';
+import 'package:food_delivery/features/auth/presentation/pages/forgot_password/forgot_password.dart';
 
-import '../../../../../core/common/text_styles/name_textstyles.dart'; // Verify path
+import '../../../../../core/common/text_styles/name_textstyles.dart';
 
-// TODO: Import Forgot Password screen when created
-// import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -45,12 +43,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _updateSignInButtonState() {
-    // Basic check, can add more validation feedback later
     if (mounted) {
-      setState(() {
-        _isSignInEnabled = _emailController.text.isNotEmpty &&
-            _passwordController.text.isNotEmpty;
-      });
+      final newState = _emailController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty;
+      if (_isSignInEnabled != newState) {
+        setState(() { _isSignInEnabled = newState; });
+      }
     }
   }
 
@@ -58,46 +56,42 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() { _obscurePassword = !_obscurePassword; });
   }
 
-  // Placeholder for Login Logic
   void _handleLogin() {
-    // Hide keyboard
     FocusScope.of(context).unfocus();
-    // Validate form
     if (_formKey.currentState?.validate() ?? false) {
       print('Login Attempt: Email: ${_emailController.text}, Remember Me: $_rememberMe');
       // TODO: Implement actual login API call here
-      // On success, navigate to main app screen (e.g., HomeScreen)
-      // Example: Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()));
-      // On failure, show error message (e.g., using ScaffoldMessenger or another state variable)
+      // On success, navigate to main app screen
+      // On failure, show error from API
     } else {
       print('Login form is invalid');
-      // Optionally show a generic error message if needed
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppStrings.pleaseFillAllFieldsCorrectly)), // Make sure this string exists
+      );
     }
   }
 
-  // Navigation to Registration
   void _navigateToRegister() {
-    // Use push so the user can navigate back from SignUp to Login if desired
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const SignUpScreen()), // Ensure SignUpScreen exists and import path is correct
+      MaterialPageRoute(builder: (context) => const SignUpScreen()),
     );
     print("Navigate to Register Screen");
   }
 
   void _forgotPassword() {
-    print("Forgot Password Tapped");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ForgotPasswordScreen(), // Navigate to the email entry screen
+      ),
+    );
+    print("Forgot Password Tapped, navigating to Forgot Password email entry screen.");
   }
 
-  void _onContinueWithFacebook() {
-    print("Continue with Facebook");
-  }
-  void _onContinueWithGoogle() {
-    print("Continue with Google");
-  }
-  void _onContinueWithApple() {
-    print("Continue with Apple");
-  }
+  void _onContinueWithFacebook() { /* TODO */ print("Continue with Facebook");}
+  void _onContinueWithGoogle() { /* TODO */ print("Continue with Google"); }
+  void _onContinueWithApple() { /* TODO */ print("Continue with Apple"); }
 
 
   @override
@@ -114,59 +108,49 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: AppResponsive.height(40)),
-
                   Text(
                     AppStrings.login,
-                    style: _textStyles.bold(
-                      color: AppColors.primary500,
-                      fontSize: 30,
-                    ),
+                    style: _textStyles.bold( color: AppColors.primary500, fontSize: 30),
                   ),
                   SizedBox(height: AppResponsive.height(40)),
-
-                  Column(
-                    children: [
-                      TextFormField(
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: _inputDecoration(
-                          hintText: AppStrings.email,
-                          prefixIcon: Icons.email_outlined,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) return AppStrings.pleaseEnterEmail;
-                          if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) return AppStrings.pleaseEnterValidEmail;
-                          return null;
-                        },
-                        textInputAction: TextInputAction.next,
-                      ),
-                      SizedBox(height: AppResponsive.height(20)),
-                      TextFormField(
-                        controller: _passwordController,
-                        obscureText: _obscurePassword,
-                        decoration: _inputDecoration(
-                          hintText: AppStrings.password,
-                          prefixIcon: Icons.lock_outline,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                              color: AppColors.neutral400,
-                            ),
-                            onPressed: _togglePasswordVisibility,
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) return AppStrings.pleaseEnterPassword;
-                          if (value.length < 6) return AppStrings.passwordTooShort;
-                          return null;
-                        },
-                        textInputAction: TextInputAction.done,
-                        onFieldSubmitted: (_) => _isSignInEnabled ? _handleLogin() : null,
-                      ),
-                    ],
+                  TextFormField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: _inputDecoration(
+                      hintText: AppStrings.email,
+                      prefixIcon: Icons.email_outlined,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return AppStrings.pleaseEnterEmail;
+                      if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) return AppStrings.pleaseEnterValidEmail;
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
                   ),
                   SizedBox(height: AppResponsive.height(20)),
-
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: _obscurePassword,
+                    decoration: _inputDecoration(
+                      hintText: AppStrings.password,
+                      prefixIcon: Icons.lock_outline,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                          color: AppColors.neutral400,
+                        ),
+                        onPressed: _togglePasswordVisibility,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return AppStrings.pleaseEnterPassword;
+                      if (value.length < 6) return AppStrings.passwordTooShort;
+                      return null;
+                    },
+                    textInputAction: TextInputAction.done,
+                    onFieldSubmitted: (_) => _isSignInEnabled ? _handleLogin() : null,
+                  ),
+                  SizedBox(height: AppResponsive.height(20)),
                   InkWell(
                     onTap: () { setState(() { _rememberMe = !_rememberMe; }); },
                     splashColor: AppColors.primary100,
@@ -194,7 +178,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: AppResponsive.height(30)),
-
                   SizedBox(
                     width: AppResponsive.width(345),
                     height: AppResponsive.height(53),
@@ -214,7 +197,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: AppResponsive.height(16)),
-
                   TextButton(
                     onPressed: _forgotPassword,
                     child: Text(
@@ -223,7 +205,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: AppResponsive.height(30)),
-
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(20)),
                     child: Row(
@@ -241,7 +222,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: AppResponsive.height(20)),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -253,7 +233,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   SizedBox(height: AppResponsive.height(40)),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -294,40 +273,20 @@ class _LoginScreenState extends State<LoginScreen> {
       filled: true,
       fillColor: AppColors.neutral100.withOpacity(0.5),
       contentPadding: EdgeInsets.symmetric(vertical: AppResponsive.height(16), horizontal: AppResponsive.width(16)),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppResponsive.height(12)),
-        borderSide: BorderSide.none,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppResponsive.height(12)),
-        borderSide: BorderSide.none,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppResponsive.height(12)),
-        borderSide: BorderSide(color: AppColors.primary300, width: 1.0),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppResponsive.height(12)),
-        borderSide: BorderSide(color: AppColors.primary500, width: 1.0),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppResponsive.height(12)),
-        borderSide: BorderSide(color: AppColors.primary500, width: 1.5),
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide.none,),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide.none,),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.primary300, width: 1.0),),
+      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.primary500, width: 1.0),),
+      focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.primary500, width: 1.5),),
     );
   }
 
   Widget _buildSocialIcon(String iconAsset, VoidCallback onPressed) {
     return IconButton(
-      icon: Image.asset(
-        iconAsset,
-        height: AppResponsive.height(24),
-        width: AppResponsive.width(24),
-        errorBuilder: (context, error, stackTrace) => Icon(Icons.error, size: AppResponsive.height(24), color: AppColors.neutral400),
-      ),
+      icon: Image.asset( iconAsset, height: AppResponsive.height(24), width: AppResponsive.width(24),
+        errorBuilder: (context, error, stackTrace) => Icon(Icons.error, size: AppResponsive.height(24), color: AppColors.neutral400),),
       onPressed: onPressed,
       padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(),
-    );
+      constraints: const BoxConstraints(),);
   }
 }

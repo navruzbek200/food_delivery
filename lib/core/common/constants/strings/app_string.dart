@@ -100,12 +100,10 @@ abstract class AppStrings {
   static const String cancel = "Cancel";
   static const String search = "Search";
   static const String register = "Register";
-
   static const String pleaseEnterEmail = "Please enter your email";
   static const String pleaseEnterValidEmail = "Please enter a valid email";
   static const String pleaseEnterPassword = "Please enter your password";
   static const String passwordTooShort = "Password must be at least 6 characters";
-
   static const String LoginScreen = "Login";
   static const String orSignUp = "or Sign up with";
   static const String letsYouIn = "Let's you in";
@@ -121,10 +119,26 @@ abstract class AppStrings {
   static const String splashTagline = "As fast as lightning,\nas delicious as thunder!";
   static const String welcomeTo = "Welcome to";
   static const String startEnjoying = "Start enjoying";
+  static const String codeHasBeenSentTo = "Code has been sent to ";
+  static const String didntReceiveCode = "Didn't receive code?";
+  static const String resendCode = "Resend Code";
+  static const String codeInvalid = "Code Invalid";
+  static const String sendCode = "Resend Code";
+  static const String enterEmailForVerificationCode = "Please enter your email to receive a password reset code.";
+  static const String createYourNewPassword = "Create Your New Password";
+  static const String newPassword = "New Password";
+  static const String confirmNewPassword = "Confirm New Password";
+  static const String continueText = "Continue";
+  static const String passwordsDoNotMatch = "Passwords do not match";
+  static const String pleaseConfirmPassword = "Please confirm your password";
+  static const String passwordUpdatedSuccessfully = "Password updated successfully! Please login.";
+
+  static const String pleaseEnterAllDigits = "Please enter all digits";
+
+  static const String pleaseFillAllFieldsCorrectly = "Please fill all fields correctly";
+  }
 
 
 
 
 
-
-}

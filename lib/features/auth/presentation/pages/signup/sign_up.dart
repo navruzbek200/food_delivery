@@ -4,6 +4,7 @@ import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';
 import '../../../../../core/common/text_styles/name_textstyles.dart';
 import '../login/login.dart';
+import '../otp_verification/verificationScreen.dart';
 
 
 class SignUpScreen extends StatefulWidget {
@@ -41,10 +42,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _updateRegisterButtonState() {
     if (mounted) {
-      setState(() {
-        _isRegisterEnabled = _emailController.text.isNotEmpty &&
-            _passwordController.text.isNotEmpty;
-      });
+      final newState = _emailController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty;
+      if (_isRegisterEnabled != newState) {
+        setState(() {
+          _isRegisterEnabled = newState;
+        });
+      }
     }
   }
 
@@ -52,39 +56,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() { _obscurePassword = !_obscurePassword; });
   }
 
+
+  // In _SignUpScreenState class
   void _handleRegister() {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState?.validate() ?? false) {
       print('Registration Attempt:');
       print('Email: ${_emailController.text}');
-      print('Password: set');
-      print('Remember Me: $_rememberMe');
+      // ... other prints ...
+
+      // TODO: Implement actual registration API call/logic here
+      // If API call is successful:
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VerificationScreen(
+            verificationTarget: _emailController.text,
+            purpose: OtpVerificationPurpose.signUp, verificationTargetEmail: 'navrozbekbektemirov7@gmail.com', // <<< ADD THIS LINE
+          ),
+        ),
+      );
     } else {
       print('Registration form is invalid');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppStrings.pleaseFillAllFieldsCorrectly)), // Make sure this string exists
+      );
     }
   }
-
   void _navigateToLogin() {
     if (Navigator.canPop(context)) {
       Navigator.pop(context);
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()), // Verify path
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     }
     print("Navigate to Login Screen");
   }
 
-  void _onContinueWithFacebook() {
-    print("Sign Up with Facebook");
-  }
-  void _onContinueWithGoogle() {
-    print("Sign Up with Google");
-  }
-  void _onContinueWithApple() {
-    print("Sign Up with Apple");
-  }
+  void _onContinueWithFacebook() => print("Sign Up with Facebook");
+  void _onContinueWithGoogle() => print("Sign Up with Google");
+  void _onContinueWithApple() => print("Sign Up with Apple");
 
   @override
   Widget build(BuildContext context) {
@@ -152,10 +165,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (value.length < 6) return AppStrings.passwordTooShort;
                           return null;
                         },
-                        textInputAction: TextInputAction.done,
+                        textInputAction: TextInputAction.done, // Change to next if confirm password is added
                         onFieldSubmitted: (_) => _isRegisterEnabled ? _handleRegister() : null,
                       ),
-
+                      // TODO: Add Confirm Password Field here if needed
                     ],
                   ),
                   SizedBox(height: AppResponsive.height(20)),
