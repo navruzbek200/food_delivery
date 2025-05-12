@@ -16,7 +16,7 @@ class VerificationScreen extends StatefulWidget {
   const VerificationScreen({
     Key? key,
     this.verificationTarget,
-    required this.purpose, required String verificationTargetEmail, // Make purpose required
+    required this.purpose, required String verificationTargetEmail,
   }) : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final _textStyles = RobotoTextStyles();
 
   Timer? _timer;
-  int _start = 45;
+  int _start = 60;
   bool _canResendCode = false;
   String? _errorMessage;
 
@@ -46,7 +46,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
     if (mounted) {
       setState(() {
         _canResendCode = false;
-        _start = 45;
+        _start = 60;
         _errorMessage = null;
       });
     }
@@ -111,20 +111,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
       } else if (widget.purpose == OtpVerificationPurpose.signUp) {
         // TODO: Navigate to the next screen after successful sign-up OTP
         print("Sign Up OTP successful. Navigate to next step (e.g., profile setup or home).");
-        // Example:
-        // Navigator.of(context).pushReplacement(
-        //   MaterialPageRoute(builder: (context) => const SetupProfileScreen()),
-        // );
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Sign up OTP verified! (Placeholder navigation)")),
         );
       }
     } else {
-      // This block will only be hit if you change isOtpValid based on a real API call
-      setState(() { _errorMessage = AppStrings.codeInvalid; });
-      _pinController.clear();
-      _focusNode.requestFocus();
-      print("OTP Verification Failed! Entered OTP: '$otp'");
+
     }
   }
 
