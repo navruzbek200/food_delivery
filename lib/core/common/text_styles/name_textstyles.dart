@@ -32,9 +32,10 @@ class RobotoTextStyles extends AppTextStyles {
       );
 
   @override
-  TextStyle regular({required Color color, required double fontSize}) =>
+  TextStyle regular({required Color color, required double fontSize, TextDecoration? decoration}) =>
       TextStyle(
         fontSize: AppResponsive.height(fontSize),
+        decoration: decoration,
         color: color,
         fontWeight: FontWeight.w400,
         fontFamily: roboto,

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';
-
 import 'package:food_delivery/features/auth/presentation/pages/signup/sign_up.dart';
 import 'package:food_delivery/features/auth/presentation/pages/forgot_password/forgot_password.dart';
+import 'package:food_delivery/features/home/presentation/pages/home_screen.dart';
 
 import '../../../../../core/common/text_styles/name_textstyles.dart';
 
@@ -60,13 +60,24 @@ class _LoginScreenState extends State<LoginScreen> {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState?.validate() ?? false) {
       print('Login Attempt: Email: ${_emailController.text}, Remember Me: $_rememberMe');
+
       // TODO: Implement actual login API call here
-      // On success, navigate to main app screen
-      // On failure, show error from API
+      // Simulate successful login for now
+      bool loginSuccess = true;
+
+      if (!mounted) return;
+
+      if (loginSuccess) {
+        print("Login successful! Navigating to HomeScreen...");
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const HomeScreen()), // Navigate to HomeScreen
+              (Route<dynamic> route) => false, // Clear back stack
+        );
+      }
     } else {
       print('Login form is invalid');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppStrings.pleaseFillAllFieldsCorrectly)), // Make sure this string exists
+        SnackBar(content: Text(AppStrings.pleaseFillAllFieldsCorrectly)), // Ensure this string exists
       );
     }
   }
@@ -83,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const ForgotPasswordScreen(), // Navigate to the email entry screen
+        builder: (context) => const ForgotPasswordScreen(),
       ),
     );
     print("Forgot Password Tapped, navigating to Forgot Password email entry screen.");
@@ -96,6 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ... (Full build method for LoginScreen - kept same as provided in previous "Full Login" response)
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
@@ -108,152 +120,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: AppResponsive.height(40)),
-                  Text(
-                    AppStrings.login,
-                    style: _textStyles.bold( color: AppColors.primary500, fontSize: 30),
-                  ),
+                  Text( AppStrings.login, style: _textStyles.bold( color: AppColors.primary500, fontSize: 30),),
                   SizedBox(height: AppResponsive.height(40)),
-                  TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: _inputDecoration(
-                      hintText: AppStrings.email,
-                      prefixIcon: Icons.email_outlined,
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) return AppStrings.pleaseEnterEmail;
-                      if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) return AppStrings.pleaseEnterValidEmail;
-                      return null;
-                    },
-                    textInputAction: TextInputAction.next,
-                  ),
+                  TextFormField( controller: _emailController, keyboardType: TextInputType.emailAddress, decoration: _inputDecoration( hintText: AppStrings.email, prefixIcon: Icons.email_outlined,), validator: (value) { if (value == null || value.isEmpty) return AppStrings.pleaseEnterEmail; if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) return AppStrings.pleaseEnterValidEmail; return null; }, textInputAction: TextInputAction.next,),
                   SizedBox(height: AppResponsive.height(20)),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    decoration: _inputDecoration(
-                      hintText: AppStrings.password,
-                      prefixIcon: Icons.lock_outline,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                          color: AppColors.neutral400,
-                        ),
-                        onPressed: _togglePasswordVisibility,
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) return AppStrings.pleaseEnterPassword;
-                      if (value.length < 6) return AppStrings.passwordTooShort;
-                      return null;
-                    },
-                    textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (_) => _isSignInEnabled ? _handleLogin() : null,
-                  ),
+                  TextFormField( controller: _passwordController, obscureText: _obscurePassword, decoration: _inputDecoration( hintText: AppStrings.password, prefixIcon: Icons.lock_outline, suffixIcon: IconButton( icon: Icon( _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, color: AppColors.neutral400,), onPressed: _togglePasswordVisibility,),), validator: (value) { if (value == null || value.isEmpty) return AppStrings.pleaseEnterPassword; if (value.length < 6) return AppStrings.passwordTooShort; return null; }, textInputAction: TextInputAction.done, onFieldSubmitted: (_) => _isSignInEnabled ? _handleLogin() : null,),
                   SizedBox(height: AppResponsive.height(20)),
-                  InkWell(
-                    onTap: () { setState(() { _rememberMe = !_rememberMe; }); },
-                    splashColor: AppColors.primary100,
-                    highlightColor: AppColors.primary100,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: AppResponsive.width(24),
-                          height: AppResponsive.height(24),
-                          child: Checkbox(
-                            value: _rememberMe,
-                            onChanged: (bool? value) { setState(() { _rememberMe = value ?? false; }); },
-                            activeColor: AppColors.primary500,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            side: BorderSide(color: _rememberMe ? AppColors.primary500 : AppColors.neutral300),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(4))),
-                          ),
-                        ),
-                        SizedBox(width: AppResponsive.width(12)),
-                        Text(
-                          AppStrings.rememberMe,
-                          style: _textStyles.medium( color: AppColors.neutral800, fontSize: 14),
-                        ),
-                      ],
-                    ),
-                  ),
+                  InkWell( onTap: () { setState(() { _rememberMe = !_rememberMe; }); }, splashColor: AppColors.primary100, highlightColor: AppColors.primary100, child: Row( children: [ SizedBox( width: AppResponsive.width(24), height: AppResponsive.height(24), child: Checkbox( value: _rememberMe, onChanged: (bool? value) { setState(() { _rememberMe = value ?? false; }); }, activeColor: AppColors.primary500, materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, side: BorderSide(color: _rememberMe ? AppColors.primary500 : AppColors.neutral300), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(4))),),), SizedBox(width: AppResponsive.width(12)), Text( AppStrings.rememberMe, style: _textStyles.medium( color: AppColors.neutral800, fontSize: 14),), ],),),
                   SizedBox(height: AppResponsive.height(30)),
-                  SizedBox(
-                    width: AppResponsive.width(345),
-                    height: AppResponsive.height(53),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: _isSignInEnabled ? AppColors.primary500 : AppColors.primary200,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppResponsive.height(28)),
-                        ),
-                        elevation: _isSignInEnabled ? 2 : 0,
-                      ),
-                      onPressed: _isSignInEnabled ? _handleLogin : null,
-                      child: Text(
-                        AppStrings.signIn,
-                        style: _textStyles.semiBold(color: AppColors.white, fontSize: 16),
-                      ),
-                    ),
-                  ),
+                  SizedBox( width: AppResponsive.width(345), height: AppResponsive.height(53), child: ElevatedButton( style: ElevatedButton.styleFrom( backgroundColor: _isSignInEnabled ? AppColors.primary500 : AppColors.primary200, shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(AppResponsive.height(28)),), elevation: _isSignInEnabled ? 2 : 0,), onPressed: _isSignInEnabled ? _handleLogin : null, child: Text( AppStrings.signIn, style: _textStyles.semiBold(color: AppColors.white, fontSize: 16),),),),
                   SizedBox(height: AppResponsive.height(16)),
-                  TextButton(
-                    onPressed: _forgotPassword,
-                    child: Text(
-                      AppStrings.forgotPassword,
-                      style: _textStyles.medium( color: AppColors.primary500, fontSize: 14),
-                    ),
-                  ),
+                  TextButton( onPressed: _forgotPassword, child: Text( AppStrings.forgotPassword, style: _textStyles.medium( color: AppColors.primary500, fontSize: 14),),),
                   SizedBox(height: AppResponsive.height(30)),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(20)),
-                    child: Row(
-                      children: [
-                        const Expanded(child: Divider(color: AppColors.neutral200, thickness: 1)),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(16)),
-                          child: Text(
-                            AppStrings.orSignIn,
-                            style: _textStyles.regular( color: AppColors.neutral600, fontSize: 14),
-                          ),
-                        ),
-                        const Expanded(child: Divider(color: AppColors.neutral200, thickness: 1)),
-                      ],
-                    ),
-                  ),
+                  Padding( padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(20)), child: Row( children: [ const Expanded(child: Divider(color: AppColors.neutral200, thickness: 1)), Padding( padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(16)), child: Text( AppStrings.orSignIn, style: _textStyles.regular( color: AppColors.neutral600, fontSize: 14),),), const Expanded(child: Divider(color: AppColors.neutral200, thickness: 1)), ],),),
                   SizedBox(height: AppResponsive.height(20)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildSocialIcon('assets/icons/google_icon.png', _onContinueWithGoogle),
-                      SizedBox(width: AppResponsive.width(20)),
-                      _buildSocialIcon('assets/icons/facebook_icon.png', _onContinueWithFacebook),
-                      SizedBox(width: AppResponsive.width(20)),
-                      _buildSocialIcon('assets/icons/apple_icon.png', _onContinueWithApple),
-                    ],
-                  ),
+                  Row( mainAxisAlignment: MainAxisAlignment.center, children: [ _buildSocialIcon('assets/icons/google_icon.png', _onContinueWithGoogle), SizedBox(width: AppResponsive.width(20)), _buildSocialIcon('assets/icons/facebook_icon.png', _onContinueWithFacebook), SizedBox(width: AppResponsive.width(20)), _buildSocialIcon('assets/icons/apple_icon.png', _onContinueWithApple), ],),
                   SizedBox(height: AppResponsive.height(40)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        AppStrings.dontHaveAccount,
-                        style: _textStyles.regular(color: AppColors.neutral700, fontSize: 14),
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(4)),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        onPressed: _navigateToRegister,
-                        child: Text(
-                          AppStrings.register,
-                          style: _textStyles.semiBold(color: AppColors.primary500, fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
+                  Row( mainAxisAlignment: MainAxisAlignment.center, children: [ Text( AppStrings.dontHaveAccount, style: _textStyles.regular(color: AppColors.neutral700, fontSize: 14),), TextButton( style: TextButton.styleFrom( padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(4)), minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap,), onPressed: _navigateToRegister, child: Text( AppStrings.register, style: _textStyles.semiBold(color: AppColors.primary500, fontSize: 14),),), ],),
                   SizedBox(height: AppResponsive.height(30)),
                 ],
               ),
@@ -264,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  InputDecoration _inputDecoration({required String hintText, required IconData prefixIcon, Widget? suffixIcon}) {
+  InputDecoration _inputDecoration({required String hintText, required IconData prefixIcon, Widget? suffixIcon}) { /* ... Same ... */
     return InputDecoration(
       hintText: hintText,
       hintStyle: _textStyles.regular(color: AppColors.neutral400, fontSize: 14),
@@ -280,8 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
       focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.primary500, width: 1.5),),
     );
   }
-
-  Widget _buildSocialIcon(String iconAsset, VoidCallback onPressed) {
+  Widget _buildSocialIcon(String iconAsset, VoidCallback onPressed) { /* ... Same ... */
     return IconButton(
       icon: Image.asset( iconAsset, height: AppResponsive.height(24), width: AppResponsive.width(24),
         errorBuilder: (context, error, stackTrace) => Icon(Icons.error, size: AppResponsive.height(24), color: AppColors.neutral400),),

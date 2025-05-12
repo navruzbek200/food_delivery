@@ -1,5 +1,6 @@
 abstract class AppStrings {
 
+
   static const String rememberMe = "Remember me";
   static const String next = "Next";
   static const String skip = "Skip";
@@ -17,7 +18,7 @@ abstract class AppStrings {
   static const String continueWithGoogle = "Continue with Google";
   static const String continueWithApple = "Continue with Apple";
   static const String backToSignIn = "Back to Sign In";
-  static const String continueButton = "Continue";
+  static const String continueText = "Continue"; // Changed from continueButton for generality
   static const String specialOffers = "Special Offers";
   static const String addToBasket = "Add to Basket";
   static const String placeOrder = "Place Order";
@@ -41,10 +42,11 @@ abstract class AppStrings {
   static const String inviteFriends = "Invite Friends";
   static const String logOut = "Log Out";
   static const String darkMode = "Dark Mode";
-  static const String payment = "Messages"; // Assuming this label is correct? Maybe "Payments"?
+
+  // static const String payment = "Messages"; // You had this, maybe meant "Payments"?
   static const String security = "Security";
   static const String myPromotion = "My Promotions";
-  static const String profileContinue = "Continue";
+  static const String profileContinue = "Continue"; // Same as continueText, consider reusing
   static const String createNewPin = "Create New PIN";
   static const String addPinNumber = "Add a PIN number to make your account more secure.";
   static const String setYourFingerprint = "Set Your Fingerprint";
@@ -56,14 +58,14 @@ abstract class AppStrings {
   static const String selectWhichContact = "Select which contact details should we use to reset your password";
   static const String writeReview = "Write Review";
   static const String downloadCertificate = "Download Certificate";
-  static const String avaibleTests = "Avaible Tests"; // Note: Typo, should likely be "Available Tests"
+  static const String avaibleTests = "Available Tests"; // Corrected typo
   static const String completedTests = "Completed Tests";
   static const String startTest = "Start Test";
   static const String pleaseLeaveReview = "Please leave a review for your course";
   static const String generalNotification = "General Notification";
   static const String sound = "Sound";
   static const String promoDiscount = "Promo & Discount";
-  static const String payments = "Payments"; // Duplicate key 'payments' - one should likely be renamed if context is different
+  static const String payments = "Payments";
   static const String cashback = "Cashback";
   static const String appUpdates = "App Updates";
   static const String newServiceAvailable = "New Service Available";
@@ -104,7 +106,6 @@ abstract class AppStrings {
   static const String pleaseEnterValidEmail = "Please enter a valid email";
   static const String pleaseEnterPassword = "Please enter your password";
   static const String passwordTooShort = "Password must be at least 6 characters";
-  static const String LoginScreen = "Login";
   static const String orSignUp = "or Sign up with";
   static const String letsYouIn = "Let's you in";
   static const String signInWithPassword = "Sign in with password";
@@ -119,26 +120,55 @@ abstract class AppStrings {
   static const String splashTagline = "As fast as lightning,\nas delicious as thunder!";
   static const String welcomeTo = "Welcome to";
   static const String startEnjoying = "Start enjoying";
+  static const String pleaseFillAllFieldsCorrectly = "Please fill all fields correctly.";
+  static const String enterEmailForVerificationCode = "Enter your email address to receive a verification code.";
+  static const String sendCode = "Send Code";
   static const String codeHasBeenSentTo = "Code has been sent to ";
   static const String didntReceiveCode = "Didn't receive code?";
   static const String resendCode = "Resend Code";
   static const String codeInvalid = "Code Invalid";
-  static const String sendCode = "Resend Code";
-  static const String enterEmailForVerificationCode = "Please enter your email to receive a password reset code.";
+  static const String pleaseConfirmPassword = "Please confirm your password";
+  static const String passwordsDoNotMatch = "Passwords do not match";
+  static const String passwordUpdatedSuccessfully = "Password updated successfully! Please login.";
+  static const String pleaseEnterAllDigits = "Please enter all digits";
   static const String createYourNewPassword = "Create Your New Password";
   static const String newPassword = "New Password";
   static const String confirmNewPassword = "Confirm New Password";
-  static const String continueText = "Continue";
-  static const String passwordsDoNotMatch = "Passwords do not match";
-  static const String pleaseConfirmPassword = "Please confirm your password";
-  static const String passwordUpdatedSuccessfully = "Password updated successfully! Please login.";
-
-  static const String pleaseEnterAllDigits = "Please enter all digits";
-
-  static const String pleaseFillAllFieldsCorrectly = "Please fill all fields correctly";
-  }
 
 
+  static const String iceCreamDay = "ICE CREAM DAY";
+  static const String getYourSweetIceCream = "GET YOUR SWEET\nICE CREAM"; // \n for line break
+  static const String fortyPercentOff = "40% OFF";
 
+  static const String greenDay = "GREEN DAY";
+  static const String upToSixtyPercentOff = "UP TO\n60% OFF";
+  static const String saladCategory = "Salad Category";
+
+  static const String couplesDeal = "COUPLES DEAL";
+  static const String doubleHappiness = "Double\nhappiness.";
+  static const String happyValentinesDay = "Happy Valentine's Day";
+
+  static const String deliverTo = "Deliver to";
+  static const String selectYourLocation = "Select Your Location";
+  static const String home = "Home";
+  static const String notify = "Notify";
+
+
+  static const String viewAll = "View All";
+
+
+  static const String payment = "Messages";
+
+  static const String notFound = "Not Found";
+
+  static const String trySearchingDifferentKeywords = "";
+
+  static const String recent = "Recent";
+  static const String clearAll = "Clear All";
+
+  static const String tryDifferentKeywordsOrFilters = "";
+
+
+}
 
 
