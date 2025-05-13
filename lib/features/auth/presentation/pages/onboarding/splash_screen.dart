@@ -5,7 +5,6 @@ import 'package:food_delivery/features/auth/presentation/pages/onboarding/welcom
 import '../../../../../core/common/constants/strings/app_string.dart';
 import '../../../../../core/common/text_styles/name_textstyles.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -15,7 +14,8 @@ class SplashScreen extends StatefulWidget {
 
 enum LoadingStage { start, middle, done }
 
-class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   LoadingStage _currentStage = LoadingStage.start;
 
   late AnimationController _progressController;
@@ -29,7 +29,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   late Animation<double> _taglineOpacityAnimation;
 
   static const Color _backgroundColor = AppColors.primary500;
-
   static const Duration _progressSegmentDuration = Duration(seconds: 1);
   static const Duration _fadeDuration = Duration(milliseconds: 700);
   static const Duration _initialDelay = Duration(milliseconds: 300);
@@ -53,17 +52,20 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     _logoScaleAnimation = Tween<double>(begin: 0.7, end: 1.0).animate(
       CurvedAnimation(parent: _logoController, curve: Curves.easeOutBack),
     );
-    _logoOpacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _logoController, curve: Curves.easeIn),
-    );
+    _logoOpacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _logoController, curve: Curves.easeIn));
 
     _textController = AnimationController(duration: _fadeDuration, vsync: this);
-    _appNameOpacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _textController, curve: Curves.easeIn),
-    );
-    _taglineOpacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _textController, curve: Curves.easeIn),
-    );
+    _appNameOpacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _textController, curve: Curves.easeIn));
+    _taglineOpacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _textController, curve: Curves.easeIn));
 
     _startLoadingAnimationSequence();
   }
@@ -76,13 +78,17 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
     await Future.delayed(_progressSegmentDuration);
     if (!mounted) return;
-    setState(() { _currentStage = LoadingStage.middle; });
+    setState(() {
+      _currentStage = LoadingStage.middle;
+    });
     _logoController.forward();
     _textController.forward();
 
     await Future.delayed(_progressSegmentDuration);
     if (!mounted) return;
-    setState(() { _currentStage = LoadingStage.done; });
+    setState(() {
+      _currentStage = LoadingStage.done;
+    });
 
     await Future.delayed(_finalScreenDelay);
     if (!mounted) return;
@@ -107,7 +113,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -131,7 +136,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         child: Image.asset(
                           'assets/icons/logo.png',
                           errorBuilder: (context, error, stackTrace) {
-                            return Icon(Icons.fastfood, color: AppColors.white, size: 80);
+                            return Icon(
+                              Icons.fastfood,
+                              color: AppColors.white,
+                              size: 80,
+                            );
                           },
                         ),
                       ),
@@ -139,7 +148,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                   ),
                 ),
                 AnimatedOpacity(
-                  opacity: _currentStage == LoadingStage.done ? _appNameOpacityAnimation.value : 0.0,
+                  opacity:
+                      _currentStage == LoadingStage.done
+                          ? _appNameOpacityAnimation.value
+                          : 0.0,
                   duration: _fadeDuration,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -168,17 +180,23 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: EdgeInsets.only(bottom: screenHeight * 0.12 + 30, left: 20, right: 20),
+              padding: EdgeInsets.only(
+                bottom: screenHeight * 0.12 + 30,
+                left: 20,
+                right: 20,
+              ),
               child: AnimatedOpacity(
-                opacity: _currentStage != LoadingStage.start ? _taglineOpacityAnimation.value : 0.0,
+                opacity:
+                    _currentStage != LoadingStage.start
+                        ? _taglineOpacityAnimation.value
+                        : 0.0,
                 duration: _fadeDuration,
                 child: Text(
                   AppStrings.splashTagline,
                   textAlign: TextAlign.center,
-                  style: _textStyles.regular(
-                    color: AppColors.white,
-                    fontSize: 16,
-                  ).copyWith(height: 1.3),
+                  style: _textStyles
+                      .regular(color: AppColors.white, fontSize: 16)
+                      .copyWith(height: 1.3),
                 ),
               ),
             ),

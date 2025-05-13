@@ -4,16 +4,18 @@ import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';
 import 'package:food_delivery/features/auth/presentation/pages/signup/sign_up.dart';
 import '../../../../core/common/text_styles/name_textstyles.dart';
+import '../widgets/lets_in_widget.dart';
 import 'login/login.dart';
-
-
 
 class LetsInScreen extends StatelessWidget {
   const LetsInScreen({Key? key}) : super(key: key);
 
   static final RobotoTextStyles _textStyles = RobotoTextStyles();
 
-  void _navigateToSpecificAuthScreen(BuildContext context, {bool isSignUp = false}) {
+  void _navigateToSpecificAuthScreen(
+    BuildContext context, {
+    bool isSignUp = false,
+  }) {
     Widget targetScreen;
     if (isSignUp) {
       targetScreen = const SignUpScreen();
@@ -23,14 +25,22 @@ class LetsInScreen extends StatelessWidget {
       print("Navigating from Let's In to Login Screen...");
     }
 
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (ctx) => targetScreen),
-    );
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (ctx) => targetScreen));
   }
 
-  void _onContinueWithFacebook(BuildContext context) { /* ... placeholder ... */ }
-  void _onContinueWithGoogle(BuildContext context) { /* ... placeholder ... */ }
-  void _onContinueWithApple(BuildContext context) { /* ... placeholder ... */ }
+  void _onContinueWithFacebook(BuildContext context) {
+    print("Continue with Facebook pressed");
+  }
+
+  void _onContinueWithGoogle(BuildContext context) {
+    print("Continue with Google pressed");
+  }
+
+  void _onContinueWithApple(BuildContext context) {
+    print("Continue with Apple pressed");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,132 +56,68 @@ class LetsInScreen extends StatelessWidget {
               children: [
                 SizedBox(height: AppResponsive.height(50)),
 
-                Image.asset(
-                  'assets/images/intr2.png',
-                  width: AppResponsive.width(345),
-                  height: AppResponsive.height(230),
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) => SizedBox(height: AppResponsive.height(230)),
-                ),
+                const LetsInHeaderImage(),
                 SizedBox(height: AppResponsive.height(15)),
 
-                Text(
-                  AppStrings.letsYouIn,
-                  textAlign: TextAlign.center,
-                  style: _textStyles.bold(
-                    color: AppColors.primary500,
-                    fontSize: 32,
-                  ),
-                ),
+                LetsInTitle(textStyles: _textStyles),
                 SizedBox(height: AppResponsive.height(30)),
 
                 SizedBox(
                   width: AppResponsive.width(345),
                   child: Column(
                     children: [
-                      _buildSocialLoginButton(
+                      SocialLoginButton(
                         context: context,
                         iconAsset: 'assets/icons/facebook_icon.png',
                         text: AppStrings.continueWithFacebook,
                         onPressed: () => _onContinueWithFacebook(context),
+                        textStyles: _textStyles,
                       ),
                       SizedBox(height: AppResponsive.height(16)),
-                      _buildSocialLoginButton(
+                      SocialLoginButton(
                         context: context,
                         iconAsset: 'assets/icons/google_icon.png',
                         text: AppStrings.continueWithGoogle,
                         onPressed: () => _onContinueWithGoogle(context),
+                        textStyles: _textStyles,
                       ),
                       SizedBox(height: AppResponsive.height(16)),
-                      _buildSocialLoginButton(
+                      SocialLoginButton(
                         context: context,
                         iconAsset: 'assets/icons/apple_icon.png',
                         text: AppStrings.continueWithApple,
                         onPressed: () => _onContinueWithApple(context),
+                        textStyles: _textStyles,
                       ),
                     ],
                   ),
                 ),
                 SizedBox(height: AppResponsive.height(24)),
 
-                Text(
-                  AppStrings.or,
-                  style: _textStyles.regular(color: AppColors.neutral500, fontSize: 14),
-                ),
+                OrDividerText(textStyles: _textStyles),
                 SizedBox(height: AppResponsive.height(24)),
 
-                SizedBox(
-                  width: AppResponsive.width(345),
-                  height: AppResponsive.height(53),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary500,
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppResponsive.height(28)),
+                SignInWithPasswordButton(
+                  onPressed:
+                      () => _navigateToSpecificAuthScreen(
+                        context,
+                        isSignUp: false,
                       ),
-                    ),
-                    onPressed: () => _navigateToSpecificAuthScreen(context, isSignUp: false),
-                    child: Text(
-                      AppStrings.signInWithPassword,
-                      style: _textStyles.semiBold(color: AppColors.white, fontSize: 16),
-                    ),
-                  ),
+                  textStyles: _textStyles,
                 ),
                 SizedBox(height: AppResponsive.height(16)),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      AppStrings.dontHaveAccount,
-                      style: _textStyles.regular(color: AppColors.neutral700, fontSize: 14),
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(4)),
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                SignUpNavigationRow(
+                  onSignUpPressed:
+                      () => _navigateToSpecificAuthScreen(
+                        context,
+                        isSignUp: true,
                       ),
-                      onPressed: () => _navigateToSpecificAuthScreen(context, isSignUp: true),
-                      child: Text(
-                        AppStrings.signUp,
-                        style: _textStyles.semiBold(color: AppColors.primary500, fontSize: 14),
-                      ),
-                    ),
-                  ],
+                  textStyles: _textStyles,
                 ),
                 SizedBox(height: AppResponsive.height(30)),
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialLoginButton({
-    required BuildContext context,
-    required String iconAsset,
-    required String text,
-    required VoidCallback onPressed}) {
-    return SizedBox(
-      width: double.infinity,
-      height: AppResponsive.height(50),
-      child: OutlinedButton.icon(
-        icon: Image.asset(iconAsset, height: AppResponsive.height(24), width: AppResponsive.width(24),
-          errorBuilder: (context, error, stackTrace) => Icon(Icons.error_outline, size: AppResponsive.height(24), color: AppColors.neutral400),
-        ),
-        label: Text(
-          text,
-          style: _textStyles.medium(color: AppColors.neutral800, fontSize: 16),
-        ),
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(20)),
-          side: BorderSide(color: AppColors.neutral300),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppResponsive.height(12)),
           ),
         ),
       ),

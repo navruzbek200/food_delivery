@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
-import 'package:food_delivery/core/common/constants/strings/app_string.dart';
-import '../../../../../core/common/text_styles/name_textstyles.dart';
+import 'package:food_delivery/core/common/text_styles/name_textstyles.dart';
 import '../lets_in.dart';
-
+import '../../widgets/onboarding_widget.dart';
 
 class OnboardingItem {
   final String imagePath;
@@ -34,18 +33,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<OnboardingItem> _onboardingItems = [
     OnboardingItem(
       imagePath: 'assets/images/intr1.png',
-      title: AppStrings.wideSelection,
-      subtitle: AppStrings.wideSelectionSubtitle,
+      title: "Wide Selection",
+      subtitle: "More than 400 restaurants nationwide.",
     ),
     OnboardingItem(
       imagePath: 'assets/images/intr3.png',
-      title: AppStrings.orderTracking,
-      subtitle: AppStrings.trackYourOrdersRealTime,
+      title: "Order Tracking",
+      subtitle: "Track your orders in real-time.",
     ),
     OnboardingItem(
       imagePath: 'assets/images/intr4.png',
-      title: AppStrings.specialOffers,
-      subtitle: AppStrings.specialOffersSubtitle,
+      title: "Special Offers",
+      subtitle: "Weekly deals and discounts.",
     ),
   ];
 
@@ -56,7 +55,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       final currentPage = _pageController.page?.round();
       if (currentPage != null && currentPage != _currentPage) {
         if (mounted) {
-          setState(() { _currentPage = currentPage; });
+          setState(() {
+            _currentPage = currentPage;
+          });
         }
       }
     });
@@ -67,7 +68,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _pageController.dispose();
     super.dispose();
   }
-
 
   void _navigateToLetsInScreen() {
     Navigator.of(context).pushReplacement(
@@ -95,6 +95,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLastContentPage = _currentPage == _onboardingItems.length - 1;
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
@@ -102,133 +104,48 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Align(
               alignment: Alignment.topRight,
-              child: Visibility(
-                visible: _currentPage < _onboardingItems.length - 1,
-                maintainSize: true,
-                maintainAnimation: true,
-                maintainState: true,
-                child: Padding(
-                  padding: EdgeInsets.only(top: AppResponsive.height(16.0), right: AppResponsive.width(24.0)),
-                  child: TextButton(
-                    onPressed: _onSkipPressed,
-                    child: Text(
-                      AppStrings.skip,
-                      style: _textStyles.regular(
-                        color: AppColors.primary500,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
+              child: SkipButton(
+                onPressed: _onSkipPressed,
+                textStyles: _textStyles,
+                visible: !isLastContentPage,
               ),
             ),
-
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
                 itemCount: _onboardingItems.length,
+                onPageChanged: (int page) {
+                  if (mounted) {
+                    setState(() {
+                      _currentPage = page;
+                    });
+                  }
+                },
                 itemBuilder: (context, index) {
-                  return _buildContentPage(_onboardingItems[index]);
+                  return OnboardingPageContent(
+                    item: _onboardingItems[index],
+                    textStyles: _textStyles,
+                  );
                 },
               ),
             ),
-
-            _buildPageIndicator(),
+            OnboardingPageIndicator(
+              itemCount: _onboardingItems.length,
+              currentPage: _currentPage,
+            ),
             SizedBox(height: AppResponsive.height(30)),
-
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: AppResponsive.width(24.0),
                 vertical: AppResponsive.height(20.0),
               ),
-              child: _buildBottomButtons(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildContentPage(OnboardingItem item) {
-    return Padding(
-      padding: EdgeInsets.all(AppResponsive.width(24.0)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Spacer(flex: 1),
-          Expanded(
-            flex: 4,
-            child: Image.asset(
-              item.imagePath,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => Icon(
-                Icons.image_not_supported,
-                size: AppResponsive.height(100),
-                color: AppColors.neutral300,
+              child: OnboardingNavigationButton(
+                isLastPage: isLastContentPage,
+                onPressed: _onNextPressed,
+                textStyles: _textStyles,
               ),
             ),
-          ),
-          SizedBox(height: AppResponsive.height(40)),
-          Text(
-            item.title,
-            textAlign: TextAlign.center,
-            style: _textStyles.semiBold(
-              color: AppColors.primary500,
-              fontSize: 22,
-            ),
-          ),
-          SizedBox(height: AppResponsive.height(16)),
-          Text(
-            item.subtitle,
-            textAlign: TextAlign.center,
-            style: _textStyles.regular(
-              color: AppColors.neutral700,
-              fontSize: 16,
-            ).copyWith(height: 1.4),
-          ),
-          const Spacer(flex: 2),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPageIndicator() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        _onboardingItems.length,
-            (index) => AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          margin: EdgeInsets.symmetric(horizontal: AppResponsive.width(4.0)),
-          height: AppResponsive.height(8.0),
-          width: _currentPage == index ? AppResponsive.width(24.0) : AppResponsive.width(8.0),
-          decoration: BoxDecoration(
-            color: _currentPage == index ? AppColors.primary500 : AppColors.primary200,
-            borderRadius: BorderRadius.circular(AppResponsive.height(4.0)),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomButtons() {
-    bool isLastContentPage = _currentPage == _onboardingItems.length - 1;
-
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary500,
-          padding: EdgeInsets.symmetric(vertical: AppResponsive.height(16)),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppResponsive.height(25)),
-          ),
-        ),
-        onPressed: _onNextPressed,
-        child: Text(
-          isLastContentPage ? AppStrings.startEnjoying : AppStrings.next,
-          style: _textStyles.semiBold(color: AppColors.white, fontSize: 18),
+          ],
         ),
       ),
     );

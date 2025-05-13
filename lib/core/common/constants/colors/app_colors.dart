@@ -1,8 +1,6 @@
-// lib/core/common/constants/colors/app_colors.dart
 import 'package:flutter/material.dart';
 
 class AppColors {
-
   AppColors._();
 
   // Primary Colors
@@ -16,7 +14,6 @@ class AppColors {
   static const Color primary700 = Color(0xFFD14A32);
   static const Color primary800 = Color(0xFFBC3C27);
   static const Color primary900 = Color(0xFF9B2A1E);
-
 
   // Secondary Colors
   static const Color secondary50 = Color(0xFFFFFBE6);
@@ -42,7 +39,6 @@ class AppColors {
   static const Color neutral800 = Color(0xFF212529);
   static const Color neutral900 = Color(0xFF0D1217);
 
-  // Green Colors (for success, positive states, etc.)
   static const Color green50 = Color(0xFFF2FBF5);
   static const Color green100 = Color(0xFFE0F3E9);
   static const Color green200 = Color(0xFFB2E3C7);
@@ -54,18 +50,14 @@ class AppColors {
   static const Color green800 = Color(0xFF0E7D31);
   static const Color green900 = Color(0xFF055120);
 
-  // Common Semantic Colors (optional, but good practice)
   static const Color textPrimary = neutral800;
   static const Color textSecondary = neutral600;
   static const Color textDisabled = neutral400;
-  static const Color background = Colors.white; // Or neutral50 if preferred
-  static const Color surface = Colors.white;    // Or neutral50
+  static const Color background = Colors.white;
+  static const Color surface = Colors.white;
 
-  // If you need a specific Red for errors, add it
-  // static const Color warningYellow = secondary400;
   static const Color successGreen = green500;
 
-  // Commonly used standard colors
   static const Color white = Colors.white;
   static const Color black = Colors.black;
   static const Color transparent = Colors.transparent;

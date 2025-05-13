@@ -5,9 +5,8 @@ import 'package:food_delivery/core/common/constants/strings/app_string.dart';
 import 'package:food_delivery/features/auth/presentation/pages/signup/sign_up.dart';
 import 'package:food_delivery/features/auth/presentation/pages/forgot_password/forgot_password.dart';
 import 'package:food_delivery/features/home/presentation/pages/home_screen.dart';
-
 import '../../../../../core/common/text_styles/name_textstyles.dart';
-
+import '../../widgets/login_widgets.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -44,40 +43,42 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _updateSignInButtonState() {
     if (mounted) {
-      final newState = _emailController.text.isNotEmpty &&
+      final newState =
+          _emailController.text.isNotEmpty &&
           _passwordController.text.isNotEmpty;
       if (_isSignInEnabled != newState) {
-        setState(() { _isSignInEnabled = newState; });
+        setState(() {
+          _isSignInEnabled = newState;
+        });
       }
     }
   }
 
   void _togglePasswordVisibility() {
-    setState(() { _obscurePassword = !_obscurePassword; });
+    setState(() {
+      _obscurePassword = !_obscurePassword;
+    });
   }
 
   void _handleLogin() {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState?.validate() ?? false) {
-      print('Login Attempt: Email: ${_emailController.text}, Remember Me: $_rememberMe');
-
-      // TODO: Implement actual login API call here
-      // Simulate successful login for now
+      print(
+        'Login Attempt: Email: ${_emailController.text}, Remember Me: $_rememberMe',
+      );
       bool loginSuccess = true;
-
       if (!mounted) return;
-
       if (loginSuccess) {
         print("Login successful! Navigating to HomeScreen...");
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const HomeScreen()), // Navigate to HomeScreen
-              (Route<dynamic> route) => false, // Clear back stack
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (Route<dynamic> route) => false,
         );
       }
     } else {
       print('Login form is invalid');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppStrings.pleaseFillAllFieldsCorrectly)), // Ensure this string exists
+        SnackBar(content: Text(AppStrings.pleaseFillAllFieldsCorrectly)),
       );
     }
   }
@@ -93,50 +94,104 @@ class _LoginScreenState extends State<LoginScreen> {
   void _forgotPassword() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const ForgotPasswordScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()),
     );
-    print("Forgot Password Tapped, navigating to Forgot Password email entry screen.");
+    print("Forgot Password Tapped");
   }
 
-  void _onContinueWithFacebook() { /* TODO */ print("Continue with Facebook");}
-  void _onContinueWithGoogle() { /* TODO */ print("Continue with Google"); }
-  void _onContinueWithApple() { /* TODO */ print("Continue with Apple"); }
+  void _onContinueWithFacebook() {
+    print("Continue with Facebook");
+  }
 
+  void _onContinueWithGoogle() {
+    print("Continue with Google");
+  }
+
+  void _onContinueWithApple() {
+    print("Continue with Apple");
+  }
 
   @override
   Widget build(BuildContext context) {
-    // ... (Full build method for LoginScreen - kept same as provided in previous "Full Login" response)
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(24.0)),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppResponsive.width(24.0),
+            ),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: AppResponsive.height(40)),
-                  Text( AppStrings.login, style: _textStyles.bold( color: AppColors.primary500, fontSize: 30),),
+                  LoginTitle(textStyles: _textStyles),
                   SizedBox(height: AppResponsive.height(40)),
-                  TextFormField( controller: _emailController, keyboardType: TextInputType.emailAddress, decoration: _inputDecoration( hintText: AppStrings.email, prefixIcon: Icons.email_outlined,), validator: (value) { if (value == null || value.isEmpty) return AppStrings.pleaseEnterEmail; if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) return AppStrings.pleaseEnterValidEmail; return null; }, textInputAction: TextInputAction.next,),
+                  EmailTextFormField(
+                    controller: _emailController,
+                    textStyles: _textStyles,
+                  ),
                   SizedBox(height: AppResponsive.height(20)),
-                  TextFormField( controller: _passwordController, obscureText: _obscurePassword, decoration: _inputDecoration( hintText: AppStrings.password, prefixIcon: Icons.lock_outline, suffixIcon: IconButton( icon: Icon( _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, color: AppColors.neutral400,), onPressed: _togglePasswordVisibility,),), validator: (value) { if (value == null || value.isEmpty) return AppStrings.pleaseEnterPassword; if (value.length < 6) return AppStrings.passwordTooShort; return null; }, textInputAction: TextInputAction.done, onFieldSubmitted: (_) => _isSignInEnabled ? _handleLogin() : null,),
+                  PasswordTextFormField(
+                    controller: _passwordController,
+                    obscureText: _obscurePassword,
+                    onToggleVisibility: _togglePasswordVisibility,
+                    textStyles: _textStyles,
+                    hintText: AppStrings.password,
+                    validator: (value) {
+                      if (value == null || value.isEmpty)
+                        return AppStrings.pleaseEnterPassword;
+                      if (value.length < 6) return AppStrings.passwordTooShort;
+                      return null;
+                    },
+                    onFieldSubmitted: (_) {
+                      if (_isSignInEnabled) {
+                        _handleLogin();
+                      }
+                    },
+                  ),
                   SizedBox(height: AppResponsive.height(20)),
-                  InkWell( onTap: () { setState(() { _rememberMe = !_rememberMe; }); }, splashColor: AppColors.primary100, highlightColor: AppColors.primary100, child: Row( children: [ SizedBox( width: AppResponsive.width(24), height: AppResponsive.height(24), child: Checkbox( value: _rememberMe, onChanged: (bool? value) { setState(() { _rememberMe = value ?? false; }); }, activeColor: AppColors.primary500, materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, side: BorderSide(color: _rememberMe ? AppColors.primary500 : AppColors.neutral300), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(4))),),), SizedBox(width: AppResponsive.width(12)), Text( AppStrings.rememberMe, style: _textStyles.medium( color: AppColors.neutral800, fontSize: 14),), ],),),
+                  RememberMeCheckbox(
+                    value: _rememberMe,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _rememberMe = value ?? false;
+                      });
+                    },
+                    textStyles: _textStyles,
+                  ),
                   SizedBox(height: AppResponsive.height(30)),
-                  SizedBox( width: AppResponsive.width(345), height: AppResponsive.height(53), child: ElevatedButton( style: ElevatedButton.styleFrom( backgroundColor: _isSignInEnabled ? AppColors.primary500 : AppColors.primary200, shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(AppResponsive.height(28)),), elevation: _isSignInEnabled ? 2 : 0,), onPressed: _isSignInEnabled ? _handleLogin : null, child: Text( AppStrings.signIn, style: _textStyles.semiBold(color: AppColors.white, fontSize: 16),),),),
+                  PrimaryElevatedButton(
+                    buttonText: AppStrings.signIn,
+                    isEnabled: _isSignInEnabled,
+                    onPressed: _handleLogin,
+                    textStyles: _textStyles,
+                  ),
                   SizedBox(height: AppResponsive.height(16)),
-                  TextButton( onPressed: _forgotPassword, child: Text( AppStrings.forgotPassword, style: _textStyles.medium( color: AppColors.primary500, fontSize: 14),),),
+                  ForgotPasswordButton(
+                    onPressed: _forgotPassword,
+                    textStyles: _textStyles,
+                  ),
                   SizedBox(height: AppResponsive.height(30)),
-                  Padding( padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(20)), child: Row( children: [ const Expanded(child: Divider(color: AppColors.neutral200, thickness: 1)), Padding( padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(16)), child: Text( AppStrings.orSignIn, style: _textStyles.regular( color: AppColors.neutral600, fontSize: 14),),), const Expanded(child: Divider(color: AppColors.neutral200, thickness: 1)), ],),),
+                  OrDividerWithText(
+                    text: AppStrings.orSignIn,
+                    textStyles: _textStyles,
+                  ),
                   SizedBox(height: AppResponsive.height(20)),
-                  Row( mainAxisAlignment: MainAxisAlignment.center, children: [ _buildSocialIcon('assets/icons/google_icon.png', _onContinueWithGoogle), SizedBox(width: AppResponsive.width(20)), _buildSocialIcon('assets/icons/facebook_icon.png', _onContinueWithFacebook), SizedBox(width: AppResponsive.width(20)), _buildSocialIcon('assets/icons/apple_icon.png', _onContinueWithApple), ],),
+                  SocialLoginIcons(
+                    onGoogleTap: _onContinueWithGoogle,
+                    onFacebookTap: _onContinueWithFacebook,
+                    onAppleTap: _onContinueWithApple,
+                  ),
                   SizedBox(height: AppResponsive.height(40)),
-                  Row( mainAxisAlignment: MainAxisAlignment.center, children: [ Text( AppStrings.dontHaveAccount, style: _textStyles.regular(color: AppColors.neutral700, fontSize: 14),), TextButton( style: TextButton.styleFrom( padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(4)), minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap,), onPressed: _navigateToRegister, child: Text( AppStrings.register, style: _textStyles.semiBold(color: AppColors.primary500, fontSize: 14),),), ],),
+                  NavigationTextRow(
+                    leadingText: AppStrings.dontHaveAccount,
+                    actionText: AppStrings.register,
+                    onActionPressed: _navigateToRegister,
+                    textStyles: _textStyles,
+                  ),
                   SizedBox(height: AppResponsive.height(30)),
                 ],
               ),
@@ -145,30 +200,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  InputDecoration _inputDecoration({required String hintText, required IconData prefixIcon, Widget? suffixIcon}) { /* ... Same ... */
-    return InputDecoration(
-      hintText: hintText,
-      hintStyle: _textStyles.regular(color: AppColors.neutral400, fontSize: 14),
-      prefixIcon: Icon(prefixIcon, color: AppColors.neutral400, size: AppResponsive.height(20)),
-      suffixIcon: suffixIcon,
-      filled: true,
-      fillColor: AppColors.neutral100.withOpacity(0.5),
-      contentPadding: EdgeInsets.symmetric(vertical: AppResponsive.height(16), horizontal: AppResponsive.width(16)),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide.none,),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide.none,),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.primary300, width: 1.0),),
-      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.primary500, width: 1.0),),
-      focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.primary500, width: 1.5),),
-    );
-  }
-  Widget _buildSocialIcon(String iconAsset, VoidCallback onPressed) { /* ... Same ... */
-    return IconButton(
-      icon: Image.asset( iconAsset, height: AppResponsive.height(24), width: AppResponsive.width(24),
-        errorBuilder: (context, error, stackTrace) => Icon(Icons.error, size: AppResponsive.height(24), color: AppColors.neutral400),),
-      onPressed: onPressed,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(),);
   }
 }

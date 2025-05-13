@@ -56,30 +56,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() { _obscurePassword = !_obscurePassword; });
   }
 
-
-  // In _SignUpScreenState class
   void _handleRegister() {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState?.validate() ?? false) {
       print('Registration Attempt:');
       print('Email: ${_emailController.text}');
-      // ... other prints ...
-
-      // TODO: Implement actual registration API call/logic here
-      // If API call is successful:
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => VerificationScreen(
             verificationTarget: _emailController.text,
-            purpose: OtpVerificationPurpose.signUp, verificationTargetEmail: 'navrozbekbektemirov7@gmail.com', // <<< ADD THIS LINE
+            purpose: OtpVerificationPurpose.signUp, verificationTargetEmail: 'navrozbekbektemirov7@gmail.com',
           ),
         ),
       );
     } else {
       print('Registration form is invalid');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppStrings.pleaseFillAllFieldsCorrectly)), // Make sure this string exists
+        SnackBar(content: Text(AppStrings.pleaseFillAllFieldsCorrectly)),
       );
     }
   }
@@ -165,10 +159,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (value.length < 6) return AppStrings.passwordTooShort;
                           return null;
                         },
-                        textInputAction: TextInputAction.done, // Change to next if confirm password is added
+                        textInputAction: TextInputAction.done,
                         onFieldSubmitted: (_) => _isRegisterEnabled ? _handleRegister() : null,
                       ),
-                      // TODO: Add Confirm Password Field here if needed
                     ],
                   ),
                   SizedBox(height: AppResponsive.height(20)),
