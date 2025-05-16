@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'notification_type.dart';
-import 'package:food_delivery/core/common/constants/colors/app_colors.dart'; // To'g'ri yo'lni ko'rsating
+import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 
 class NotificationItem {
   final String id;
@@ -38,8 +38,7 @@ class NotificationItem {
       case NotificationType.cardConnected:
         return 'assets/icons/notifications/order_successful.svg';
       case NotificationType.general:
-      default:
-        return 'assets/icons/notifications/discount.svg';
+      return 'assets/icons/notifications/discount.svg';
     }
   }
 
@@ -57,7 +56,6 @@ class NotificationItem {
       case NotificationType.orderCancelled:
         return AppColors.primary50;
       case NotificationType.general:
-      default:
         return AppColors.neutral100;
     }
   }

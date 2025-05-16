@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
+import 'package:food_delivery/core/routes/route_names.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';
 import '../../../../../core/common/text_styles/name_textstyles.dart';
@@ -61,14 +62,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (_formKey.currentState?.validate() ?? false) {
       print('Registration Attempt:');
       print('Email: ${_emailController.text}');
-      Navigator.push(
+      Navigator.pushNamed(
         context,
-        MaterialPageRoute(
-          builder: (context) => VerificationScreen(
-            verificationTarget: _emailController.text,
-            purpose: OtpVerificationPurpose.signUp, verificationTargetEmail: 'navrozbekbektemirov7@gmail.com',
-          ),
-        ),
+        RouteNames.verificationScreen,
+        // MaterialPageRoute(
+        //   builder: (context) => VerificationScreen(
+        //     verificationTarget: _emailController.text,
+        //     purpose: OtpVerificationPurpose.signUp,
+        //     // verificationTargetEmail: 'navrozbekbektemirov7@gmail.com',
+        //   ),
+        // ),
+        arguments: {"VerificationTarget": _emailController.text, "purpose": OtpVerificationPurpose.signUp}
+
       );
     } else {
       print('Registration form is invalid');

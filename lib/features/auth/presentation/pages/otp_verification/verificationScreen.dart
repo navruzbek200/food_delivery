@@ -13,12 +13,14 @@ enum OtpVerificationPurpose { signUp, forgotPassword }
 class VerificationScreen extends StatefulWidget {
   final String? verificationTarget;
   final OtpVerificationPurpose purpose;
+  // final Map verificatioon;
+
 
   const VerificationScreen({
     Key? key,
     this.verificationTarget,
     required this.purpose,
-    required String verificationTargetEmail,
+    // required String verificationTargetEmail,
   }) : super(key: key);
 
   @override
@@ -117,10 +119,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
           MaterialPageRoute(
             builder:
                 (context) => CreateNewPasswordScreen(
-                  email:
-                      widget.verificationTarget ??
-                      "unknown_email@example.com", // Yaxshiroq default qiymat
-                  otp: otp,
                 ),
           ),
         );

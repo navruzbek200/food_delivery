@@ -167,5 +167,43 @@ abstract class AppStrings {
   static const String notification = "Notification";
   static const String today = "Today";
   static const String yesterday = "Yesterday";
+  static const String logout = "Logout";
+  static const String logoutConfirmation = "Logout Confirmation";
+  static const String areYouSureLogout = "Are you sure you want to log out?";
 
-}
+  static const String myLocations = "My Locations";
+  static const String myPromotions = "My Promotions";
+  static const String paymentMethods = "Payment Methods";
+
+  static const String automaticallyUpdated = "Automatically Updated";
+
+  static const String termOfService = "Term of Service";
+  static const String aboutApp = "About App";
+
+  static const String yes = "Yes";
+
+  static const String pushNotification = "Push notification";
+  static const String yourProfile = "Your Profile";
+  static const String phoneNumber = "Phone Number";
+  static const String pleaseEnterPhoneNumber = "Please enter your phone number";
+  static const String fullName = "Full Name";
+  static const String pleaseEnterFullName = "Please enter your full name";
+  static const String dateOfBirth = "Date of Birth";
+  static const String pleaseSelectDOB = "Please select your date of birth";
+  static const String gender = "Gender";
+  static const String pleaseSelectGender = "Please select your gender";
+  static const String male = "Male";
+  static const String female = "Female";
+  static const String other = "Other";
+  static const String yourLocation = "Your Location";
+  static const String searchOrdersHint = "Search by Order ID or items";
+  static const String all = "All";
+  static const String notFoundOrders = "No orders found matching your search.";
+  static const String noOrdersInThisCategory = "You have no orders in this status yet.";
+
+  }
+
+
+
+
+

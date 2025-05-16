@@ -63,11 +63,13 @@ flutter:
   assets:
     - assets/icons/
     - assets/icons/notifications/
+    - assets/icons/profile/
     - assets/icons/bottom_nav/
     - assets/images/
     - assets/images/categories/
     - assets/images/promos/
     - assets/images/offers/
+    - assets/images/orders/
 
   fonts:
     - family: Roboto

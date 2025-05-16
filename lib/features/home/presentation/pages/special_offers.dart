@@ -50,7 +50,7 @@ class _SpecialOffersPageState extends State<SpecialOffersPage> {
       'isLiked': 'false',
     },
     {
-      'image': 'assets/images/offers/offer5.png',
+      'image': 'assets/images/offers/offer8.png',
       'name': 'Fresh Fruit Donuts',
       'price': '£5.00',
       'oldPrice': '£6.00',

@@ -70,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
     },
     {'name': AppStrings.more, 'imagePath': 'assets/images/categories/more.png'},
   ];
+
   final List<Map<String, String>> _specialOffersData = [
     {
       'id': '1',
@@ -78,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'price': '£6.00',
       'oldPrice': '£10.00',
       'rating': '4.9',
-      'isLiked': 'false',
+      'isLiked': 'true',
     },
     {
       'id': '2',
@@ -92,11 +93,11 @@ class _HomeScreenState extends State<HomeScreen> {
     {
       'id': '3',
       'image': 'assets/images/offers/offer3.png',
-      'name': 'Ramen Noodles',
+      'name': 'Turkey Burger',
       'price': '£15.00',
       'oldPrice': '£22.00',
       'rating': '4.9',
-      'isLiked': 'false',
+      'isLiked': 'true',
     },
     {
       'id': '4',
@@ -105,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'price': '£10.00',
       'oldPrice': '£12.00',
       'rating': '4.9',
-      'isLiked': 'false',
+      'isLiked': 'true',
     },
     {
       'id': '5',
@@ -116,6 +117,35 @@ class _HomeScreenState extends State<HomeScreen> {
       'rating': '4.9',
       'isLiked': 'true',
     },
+
+    {
+      'id': '6',
+      'image': 'assets/images/offers/offer6.png',
+      'name': 'Fresh Garden Salad',
+      'price': '£7.50',
+      'oldPrice': '0',
+      'rating': '4.6',
+      'isLiked': 'true',
+    },
+    {
+      'id': '7',
+      'image': 'assets/images/offers/offer7.png',
+      'name': 'Lamb Burger',
+      'price': '£3.00',
+      'oldPrice': '£3.50',
+      'rating': '4.9',
+      'isLiked': 'true',
+    },
+    {
+      'id': '8',
+      'image': 'assets/images/offers/offer8.png',
+      'name': 'Strawberry Delight Ice Cream',
+      'price': '£4.50',
+      'oldPrice': '',
+      'rating': '4.9',
+      'isLiked': 'true',
+    },
+
   ];
 
   late List<Widget> _screens;
@@ -167,9 +197,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _handleLikeToggleFromHome(
-    int originalIndexInSpecialOffers,
-    bool newLikeState,
-  ) {
+      int originalIndexInSpecialOffers,
+      bool newLikeState,
+      ) {
     if (mounted &&
         originalIndexInSpecialOffers >= 0 &&
         originalIndexInSpecialOffers < _specialOffersData.length) {
@@ -243,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final textStyles = RobotoTextStyles();
     return WillPopScope(
       onWillPop: () async {
-        if (_pageController.page?.round() != 0) {
+        if (_pageController.hasClients && _pageController.page?.round() != 0) {
           _pageController.jumpToPage(0);
           return false;
         }
@@ -281,36 +311,36 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildBottomNavItem(
               index: 0,
               inactiveIconPath:
-                  'assets/icons/bottom_nav/home_icon_inactive.svg',
+              'assets/icons/bottom_nav/home_icon_inactive.svg',
               activeIconPath: 'assets/icons/bottom_nav/home_icon_active.svg',
               label: AppStrings.home,
             ),
             _buildBottomNavItem(
               index: 1,
               inactiveIconPath:
-                  'assets/icons/bottom_nav/orders_icon_inactive.svg',
+              'assets/icons/bottom_nav/orders_icon_inactive.svg',
               activeIconPath: 'assets/icons/bottom_nav/orders_icon_active.svg',
               label: AppStrings.orders,
             ),
             _buildBottomNavItem(
               index: 2,
               inactiveIconPath:
-                  'assets/icons/bottom_nav/liked_icon_inactive.svg',
+              'assets/icons/bottom_nav/liked_icon_inactive.svg',
               activeIconPath: 'assets/icons/bottom_nav/liked_icon_active.svg',
               label: AppStrings.liked,
             ),
             _buildBottomNavItem(
               index: 3,
               inactiveIconPath:
-                  'assets/icons/bottom_nav/notification_icon_inactive.svg',
+              'assets/icons/bottom_nav/notification_icon_inactive.svg',
               activeIconPath:
-                  'assets/icons/bottom_nav/notification_icon_active.svg',
+              'assets/icons/bottom_nav/notification_icon_active.svg',
               label: AppStrings.notify,
             ),
             _buildBottomNavItem(
               index: 4,
               inactiveIconPath:
-                  'assets/icons/bottom_nav/profile_icon_inactive.svg',
+              'assets/icons/bottom_nav/profile_icon_inactive.svg',
               activeIconPath: 'assets/icons/bottom_nav/profile_icon_active.svg',
               label: AppStrings.profile,
             ),

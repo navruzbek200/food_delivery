@@ -6,13 +6,11 @@ import '../../../../../core/common/text_styles/name_textstyles.dart';
 import '../login/login.dart';
 
 class CreateNewPasswordScreen extends StatefulWidget {
-  final String email;
-  final String otp;
+
 
   const CreateNewPasswordScreen({
     Key? key,
-    required this.email,
-    required this.otp,
+
   }) : super(key: key);
 
   @override
@@ -78,9 +76,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState?.validate() ?? false) {
       final newPassword = _newPasswordController.text;
-      print(
-        'Attempting to create new password for email: ${widget.email} with OTP: ${widget.otp}',
-      );
+
       print('New Password value (for dev): $newPassword');
 
       bool passwordUpdateSuccess = true;
@@ -239,10 +235,10 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                     onToggleVisibility: _toggleConfirmPasswordVisibility,
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return AppStrings.pleaseConfirmPassword;
-                    if (value != _newPasswordController.text)
-                      return AppStrings.passwordsDoNotMatch;
+                    if (value == null || value.isEmpty){
+                      return AppStrings.pleaseConfirmPassword;}
+                    if (value != _newPasswordController.text){
+                      return AppStrings.passwordsDoNotMatch;}
                     return null;
                   },
                   textInputAction: TextInputAction.done,
