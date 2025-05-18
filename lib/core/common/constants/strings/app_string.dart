@@ -145,7 +145,7 @@ abstract class AppStrings {
   static const String googleAuthenticator = "Google Authenticator";
   static const String changePin = "Change PIN";
   static const String changePassword = "Change Password";
-  static const String englishUS = "English (US)";
+  static const String english = "English (US)";
   static const String russian = "Russian";
   static const String uzbek = "Uzbek";
   static const String suggested = "Suggested";
@@ -200,8 +200,69 @@ abstract class AppStrings {
   static const String all = "All";
   static const String notFoundOrders = "No orders found matching your search.";
   static const String noOrdersInThisCategory = "You have no orders in this status yet.";
+  static const String notFoundMessages = "No messages found";
+  static const String noMessagesYet = "You have no messages yet.";
+  static const String deleteAllMessages = "Delete All Messages";
+  static const String markAllAsRead = "Mark All as Read";
+  static const String areYouSureDeleteAllMessages = "Are you sure you want to delete all messages? This action cannot be undone.";
+  static const String delete = "Delete";
+  static const String touchId = "Touch ID";
+  static const String pinSecurity = "PIN Security";
+  static const String help = "Help";
+  static const String notFoundHelpTopics = "No help topics found matching your search.";
+  static const String noHelpTopics = "No help topics available at the moment.";
 
+  static const String appNameFull = "SPEEDY CHOW";
+
+  static const String websiteUrl = "www.speedychow.com";
+
+  static const String copyrightText = "Copyright © 2024 David (Vuong Huu Thien).\nAll rights reserved.";
+
+
+  static const String cash = "Cash";
+  static const String paypal = "PayPal";
+  static const String apply = "Apply";
+
+
+  static const String cardHolderName = "Cardholder Name";
+  static const String validThru = "Valid Thru";
+  static const String cvvCvc = "CVV / CVC";
+  static const String enterCardNumber = "**** **** **** ****";
+  static const String enterCardholderName = "Enter Cardholder Name";
+  static const String mmYY = "MM/YY";
+  static const String enterCvv = "Enter CVV";
+  static const String save = "Save";
+  static const String paymentSuccessful = "Payment Successful!";
+  static const String paymentProcessedSuccessfully = "Your payment has been successfully processed.";
+  static const String okGreat = "Ok. Great!";
+  static const String cardholderNamePlaceholder = "CARDHOLDER NAME";
+  static const String expiryDateShort = "VALID THRU";
+  static const String validateCardNumber = 'Enter a valid 16-digit card number';
+  static const String validateCardHolderName = 'Enter cardholder name';
+  static const String validateExpiryDate = 'Enter MM/YY';
+  static const String validateCvv = 'Enter CVV';
+
+  static const String promotionInformation = "Promotion Information";
+  static const String freeShipping = "FREE SHIPPING";
+  static const String description = "Description";
+  static const String duration = "Duration";
+  static const String promoCode = "Promo Code";
+  static const String applicableScope = "Applicable Scope";
+  static const String discountAmount = "Discount Amount";
+  static const String termsAndConditions = "Terms and Conditions";
+  static const String passwordChangedSuccessLogin = "Your password has been changed successfully. You will be redirected to the Login page in a few seconds.";
+
+  static const String addNewAddress = "Add New Address";
+
+  static const String noLocationsAdded = "No locations added";
   }
+
+
+
+
+
+
+
 
 
 

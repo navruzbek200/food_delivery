@@ -6,12 +6,7 @@ import '../../../../../core/common/text_styles/name_textstyles.dart';
 import '../login/login.dart';
 
 class CreateNewPasswordScreen extends StatefulWidget {
-
-
-  const CreateNewPasswordScreen({
-    Key? key,
-
-  }) : super(key: key);
+  const CreateNewPasswordScreen({Key? key}) : super(key: key);
 
   @override
   State<CreateNewPasswordScreen> createState() =>
@@ -28,6 +23,10 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
   bool _obscureConfirmPassword = true;
   bool _rememberMe = false;
   bool _isContinueEnabled = false;
+
+  final String _illustrationPath =
+      'assets/images/auth/create_password_illustration.png';
+  final String _congratsImagePath = 'assets/images/payment_successful.png';
 
   @override
   void initState() {
@@ -72,28 +71,97 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
     });
   }
 
+  void _showCongratulationsDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.all(AppResponsive.width(24)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppResponsive.height(16)),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                _congratsImagePath,
+                height: AppResponsive.height(120),
+              ),
+              SizedBox(height: AppResponsive.height(24)),
+              Text(
+                AppStrings.congratulations,
+                style: _textStyles.bold(
+                  fontSize: 20,
+                  color: AppColors.textPrimary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: AppResponsive.height(8)),
+              Text(
+                AppStrings.passwordChangedSuccessLogin,
+                style: _textStyles.regular(
+                  fontSize: 14,
+                  color: AppColors.textSecondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: AppResponsive.height(24)),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary500,
+                    padding: EdgeInsets.symmetric(
+                      vertical: AppResponsive.height(14),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppResponsive.height(25),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                      (Route<dynamic> route) => false,
+                    );
+                  },
+                  child: Text(
+                    AppStrings.okGreat,
+                    style: _textStyles.semiBold(
+                      color: AppColors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _handleCreateNewPassword() {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState?.validate() ?? false) {
       final newPassword = _newPasswordController.text;
-
       print('New Password value (for dev): $newPassword');
-
       bool passwordUpdateSuccess = true;
 
       if (!mounted) return;
-
       if (passwordUpdateSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppStrings.passwordUpdatedSuccessfully)),
-        );
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-          (Route<dynamic> route) => false,
-        );
+        _showCongratulationsDialog();
       }
     } else {
       print('Create new password form is invalid');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppStrings.pleaseFillAllFieldsCorrectly)),
+      );
     }
   }
 
@@ -178,23 +246,29 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: AppResponsive.height(30)),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   height: AppResponsive.height(180),
-                  decoration: BoxDecoration(
-                    color: AppColors.neutral200,
-                    borderRadius: BorderRadius.circular(
-                      AppResponsive.height(12),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Image Placeholder",
-                      style: _textStyles.regular(
-                        color: AppColors.neutral500,
-                        fontSize: 16,
-                      ),
-                    ),
+                  child: Image.asset(
+                    _illustrationPath,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.neutral100,
+                          borderRadius: BorderRadius.circular(
+                            AppResponsive.height(12),
+                          ),
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.image_not_supported_outlined,
+                            color: AppColors.neutral400,
+                            size: 50,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(height: AppResponsive.height(30)),
@@ -235,10 +309,12 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                     onToggleVisibility: _toggleConfirmPasswordVisibility,
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty){
-                      return AppStrings.pleaseConfirmPassword;}
-                    if (value != _newPasswordController.text){
-                      return AppStrings.passwordsDoNotMatch;}
+                    if (value == null || value.isEmpty) {
+                      return AppStrings.pleaseConfirmPassword;
+                    }
+                    if (value != _newPasswordController.text) {
+                      return AppStrings.passwordsDoNotMatch;
+                    }
                     return null;
                   },
                   textInputAction: TextInputAction.done,

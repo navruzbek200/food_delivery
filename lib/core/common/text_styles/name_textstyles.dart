@@ -40,4 +40,6 @@ class RobotoTextStyles extends AppTextStyles {
         fontWeight: FontWeight.w400,
         fontFamily: roboto,
       );
+
+  black({required Color color, required int fontSize}) {}
 }

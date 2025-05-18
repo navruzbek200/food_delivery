@@ -1,4 +1,3 @@
-// file: features/profile/presentation/widgets/user_info_header_widget.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
@@ -9,7 +8,7 @@ class UserInfoHeaderWidget extends StatelessWidget {
   final String name;
   final String phoneNumber;
   final String email;
-  final String? avatarPath; // Lokal rasm yo'li
+  final String? avatarPath;
   final VoidCallback onEditProfile;
 
   const UserInfoHeaderWidget({

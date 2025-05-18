@@ -34,9 +34,11 @@ class NotificationItem {
       case NotificationType.orderReceived:
         return 'assets/icons/notifications/order_received.svg';
       case NotificationType.orderSuccessful:
-      case NotificationType.accountSetup:
-      case NotificationType.cardConnected:
         return 'assets/icons/notifications/order_successful.svg';
+      case NotificationType.accountSetup:
+        return 'assets/icons/notifications/account_setup.svg';
+      case NotificationType.cardConnected:
+        return 'assets/icons/notifications/card_connected.svg';
       case NotificationType.general:
       return 'assets/icons/notifications/discount.svg';
     }

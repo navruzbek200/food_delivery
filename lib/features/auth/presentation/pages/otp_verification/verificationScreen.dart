@@ -13,7 +13,6 @@ enum OtpVerificationPurpose { signUp, forgotPassword }
 class VerificationScreen extends StatefulWidget {
   final String? verificationTarget;
   final OtpVerificationPurpose purpose;
-  // final Map verificatioon;
 
 
   const VerificationScreen({

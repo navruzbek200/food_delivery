@@ -64,12 +64,17 @@ flutter:
     - assets/icons/
     - assets/icons/notifications/
     - assets/icons/profile/
+    - assets/icons/social/
+    - assets/icons/help_center/
     - assets/icons/bottom_nav/
+    - assets/icons/payment_methods/
     - assets/images/
+    - assets/images/auth/
     - assets/images/categories/
     - assets/images/promos/
     - assets/images/offers/
     - assets/images/orders/
+    - assets/images/avatars/
 
   fonts:
     - family: Roboto

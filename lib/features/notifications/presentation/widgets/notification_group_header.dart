@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/common/text_styles/name_textstyles.dart'; // To'g'ri yo'lni ko'rsating
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart'; // To'g'ri yo'lni ko'rsating
-import 'package:food_delivery/core/common/constants/colors/app_colors.dart'; // To'g'ri yo'lni ko'rsating
+import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 
 class NotificationGroupHeader extends StatelessWidget {
   final String title;
