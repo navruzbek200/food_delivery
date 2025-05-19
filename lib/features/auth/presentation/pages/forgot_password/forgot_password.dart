@@ -58,7 +58,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           builder:
               (context) => VerificationScreen(
                 verificationTarget: email,
-                purpose: OtpVerificationPurpose.forgotPassword,
+                purpose: OtpVerificationPurpose.forgotPassword, verificationTargetEmail: '',
               ),
         ),
       );

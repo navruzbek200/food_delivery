@@ -297,7 +297,12 @@ abstract class AppStrings {
   static const String details = "Details";
 
   static const String orderCompletedStatus = "Order Completed";
+
+
+  static const String createAccount = "Create Account";
+  static const String orSignUpWith = "or Sign up with";
   }
+
 
 
 

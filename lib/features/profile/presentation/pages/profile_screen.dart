@@ -14,6 +14,7 @@ import 'package:food_delivery/features/profile/presentation/pages/promotion_info
 import '../../../../core/common/constants/strings/app_string.dart';
 import '../../../../core/common/text_styles/name_textstyles.dart';
 
+
 class ProfileScreen extends StatefulWidget {
   final VoidCallback? onAppBarBackPressed;
 
@@ -74,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           actions: <Widget>[
             Expanded(child: OutlinedButton(style: OutlinedButton.styleFrom(side: const BorderSide(color: AppColors.neutral300), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(25))), padding: EdgeInsets.symmetric(vertical: AppResponsive.height(12)),), child: Text(AppStrings.cancel, style: _textStyles.semiBold(fontSize: 14, color: AppColors.textSecondary)), onPressed: () => Navigator.of(dialogContext).pop(),),),
             SizedBox(width: AppResponsive.width(12)),
-            Expanded(child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary500, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(25))), padding: EdgeInsets.symmetric(vertical: AppResponsive.height(12)),), child: Text(AppStrings.yes, style: _textStyles.semiBold(fontSize: 14, color: AppColors.white)), onPressed: () { Navigator.of(dialogContext).pop(); print("User logged out (simulated)"); },),),
+            Expanded(child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary500, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(25))), padding: EdgeInsets.symmetric(vertical: AppResponsive.height(12)),), child: Text(AppStrings.yes, style: _textStyles.semiBold(fontSize: 14, color: AppColors.white)), onPressed: () { Navigator.of(dialogContext).pop(); },),),
           ],
         );
       },
@@ -87,10 +88,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _navigateTo(Widget screen) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
-  }
-
-  void _navigateToPlaceholder(String screenName) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$screenName (Not Implemented)")));
   }
 
   void _toggleEditMode() {
@@ -122,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: AppColors.neutral50,
       appBar: AppBar(
         backgroundColor: AppColors.white, elevation: 0.5, shadowColor: AppColors.neutral200.withOpacity(0.7),
-        leading: IconButton(icon: Icon(_isEditing ? Icons.close : Icons.arrow_back_ios, color: AppColors.neutral800, size: 20), onPressed: _isEditing ? _toggleEditMode : (widget.onAppBarBackPressed ?? () => Navigator.maybePop(context)),),
+        leading: IconButton(icon: Icon(_isEditing ? Icons.close : Icons.arrow_back_ios, color: AppColors.neutral800, size: 20), onPressed: _isEditing ? _toggleEditMode : widget.onAppBarBackPressed,),
         title: Text(AppStrings.profile, style: _textStyles.semiBold(color: AppColors.neutral900, fontSize: 18),),
         centerTitle: true,
         actions: [ if (!_isEditing) IconButton(icon: const Icon(Icons.more_horiz, color: AppColors.neutral800, size: 24), onPressed: _showMoreOptions,),],
@@ -149,87 +146,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildSectionContainer({required List<Widget> children}) {
-    return Container(padding: EdgeInsets.symmetric(vertical: AppResponsive.height(8)), decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(AppResponsive.height(16)), boxShadow: [BoxShadow(color: AppColors.neutral200.withOpacity(0.6), spreadRadius: 1, blurRadius: 4, offset: const Offset(0, 2),)],), child: Column(mainAxisSize: MainAxisSize.min, children: children),);
-  }
-
-  Widget _buildUserInfoSection() {
-    return Container(
-      padding: EdgeInsets.all(AppResponsive.width(16)),
-      decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(AppResponsive.height(16)), boxShadow: [BoxShadow(color: AppColors.neutral200.withOpacity(0.6), spreadRadius: 1, blurRadius: 4, offset: const Offset(0, 2),)],),
-      child: Row(
-        children: [
-          CircleAvatar(radius: AppResponsive.width(30), backgroundImage: AssetImage(_avatarPath), backgroundColor: AppColors.neutral100,),
-          SizedBox(width: AppResponsive.width(16)),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(_nameController.text, style: _textStyles.semiBold(color: AppColors.textPrimary, fontSize: 18),),
-                SizedBox(height: AppResponsive.height(4)),
-                Text(_phoneController.text, style: _textStyles.regular(color: AppColors.textSecondary, fontSize: 12),),
-                SizedBox(height: AppResponsive.height(2)),
-                Text(_emailController.text, style: _textStyles.regular(color: AppColors.textSecondary, fontSize: 12),),
-              ],
-            ),
-          ),
-          InkWell(onTap: _toggleEditMode, borderRadius: BorderRadius.circular(AppResponsive.width(20)), child: Container(padding: EdgeInsets.all(AppResponsive.width(10)), decoration: const BoxDecoration(color: AppColors.primary50, shape: BoxShape.circle,), child: Icon(Icons.edit_outlined, color: AppColors.primary500, size: AppResponsive.width(20))),),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEditProfileForm() {
-    return Form(
-      key: _formKey,
-      child: Container(
-        padding: EdgeInsets.all(AppResponsive.width(16)),
-        decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(AppResponsive.height(16)), boxShadow: [BoxShadow(color: AppColors.neutral200.withOpacity(0.6), spreadRadius: 1, blurRadius: 4, offset: const Offset(0, 2),)],),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(child: Stack(alignment: Alignment.bottomRight, children: [ CircleAvatar(radius: AppResponsive.width(40), backgroundImage: AssetImage(_avatarPath), backgroundColor: AppColors.neutral100,), InkWell(onTap: (){}, child: CircleAvatar(radius: AppResponsive.width(14), backgroundColor: AppColors.primary500, child: Icon(Icons.camera_alt_outlined, color: AppColors.white, size: AppResponsive.width(16))),) ],),),
-            SizedBox(height: AppResponsive.height(24)),
-            Text("Full Name", style: _textStyles.medium(fontSize: 13, color: AppColors.neutral700)),
-            SizedBox(height: AppResponsive.height(8)),
-            TextFormField(controller: _nameController, decoration: _inputDecoration(hintText: "Enter your full name"), validator: (value) => value == null || value.isEmpty ? "Name cannot be empty" : null,),
-            SizedBox(height: AppResponsive.height(16)),
-            Text("Phone Number", style: _textStyles.medium(fontSize: 13, color: AppColors.neutral700)),
-            SizedBox(height: AppResponsive.height(8)),
-            TextFormField(controller: _phoneController, keyboardType: TextInputType.phone, decoration: _inputDecoration(hintText: "Enter your phone number"), validator: (value) => value == null || value.isEmpty ? "Phone cannot be empty" : null,),
-            SizedBox(height: AppResponsive.height(16)),
-            Text("Email", style: _textStyles.medium(fontSize: 13, color: AppColors.neutral700)),
-            SizedBox(height: AppResponsive.height(8)),
-            TextFormField(controller: _emailController, keyboardType: TextInputType.emailAddress, decoration: _inputDecoration(hintText: "Enter your email"), validator: (value) { if (value == null || value.isEmpty) return "Email cannot be empty"; if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) return "Enter a valid email"; return null; },),
-            SizedBox(height: AppResponsive.height(30)),
-            Row(
-              children: [
-                Expanded(child: OutlinedButton(onPressed: _toggleEditMode, style: OutlinedButton.styleFrom(side: const BorderSide(color: AppColors.neutral300), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(25))), padding: EdgeInsets.symmetric(vertical: AppResponsive.height(14)),), child: Text(AppStrings.cancel, style: _textStyles.semiBold(fontSize: 16, color: AppColors.textSecondary)),),),
-                SizedBox(width: AppResponsive.width(16)),
-                Expanded(child: ElevatedButton(onPressed: _saveProfileChanges, style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary500, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(25))), padding: EdgeInsets.symmetric(vertical: AppResponsive.height(14)),), child: Text(AppStrings.save, style: _textStyles.semiBold(fontSize: 16, color: AppColors.white)),),),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  InputDecoration _inputDecoration({required String hintText}) {
-    return InputDecoration(
-      hintText: hintText,
-      hintStyle: _textStyles.regular(color: AppColors.neutral400, fontSize: 14),
-      filled: true,
-      fillColor: AppColors.neutral50,
-      contentPadding: EdgeInsets.symmetric(horizontal: AppResponsive.width(16), vertical: AppResponsive.height(14)),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.neutral200, width: 1)),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.neutral200, width: 1)),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.primary300, width: 1.5)),
-    );
-  }
-
+  Widget _buildSectionContainer({required List<Widget> children}) { return Container(padding: EdgeInsets.symmetric(vertical: AppResponsive.height(8)), decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(AppResponsive.height(16)), boxShadow: [BoxShadow(color: AppColors.neutral200.withOpacity(0.6), spreadRadius: 1, blurRadius: 4, offset: const Offset(0, 2),)],), child: Column(mainAxisSize: MainAxisSize.min, children: children),); }
+  Widget _buildUserInfoSection() { return Container(padding: EdgeInsets.all(AppResponsive.width(16)), decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(AppResponsive.height(16)), boxShadow: [BoxShadow(color: AppColors.neutral200.withOpacity(0.6), spreadRadius: 1, blurRadius: 4, offset: const Offset(0, 2),)],), child: Row(children: [ CircleAvatar(radius: AppResponsive.width(30), backgroundImage: AssetImage(_avatarPath), backgroundColor: AppColors.neutral100,), SizedBox(width: AppResponsive.width(16)), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [ Text(_nameController.text, style: _textStyles.semiBold(color: AppColors.textPrimary, fontSize: 18),), SizedBox(height: AppResponsive.height(4)), Text(_phoneController.text, style: _textStyles.regular(color: AppColors.textSecondary, fontSize: 12),), SizedBox(height: AppResponsive.height(2)), Text(_emailController.text, style: _textStyles.regular(color: AppColors.textSecondary, fontSize: 12),), ],),), InkWell(onTap: _toggleEditMode, borderRadius: BorderRadius.circular(AppResponsive.width(20)), child: Container(padding: EdgeInsets.all(AppResponsive.width(10)), decoration: const BoxDecoration(color: AppColors.primary50, shape: BoxShape.circle,), child: Icon(Icons.edit_outlined, color: AppColors.primary500, size: AppResponsive.width(20))),), ],),); }
+  Widget _buildEditProfileForm() { return Form(key: _formKey, child: Container(padding: EdgeInsets.all(AppResponsive.width(16)), decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(AppResponsive.height(16)), boxShadow: [BoxShadow(color: AppColors.neutral200.withOpacity(0.6), spreadRadius: 1, blurRadius: 4, offset: const Offset(0, 2),)],), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [ Center(child: Stack(alignment: Alignment.bottomRight, children: [ CircleAvatar(radius: AppResponsive.width(40), backgroundImage: AssetImage(_avatarPath), backgroundColor: AppColors.neutral100,), InkWell(onTap: (){}, child: CircleAvatar(radius: AppResponsive.width(14), backgroundColor: AppColors.primary500, child: Icon(Icons.camera_alt_outlined, color: AppColors.white, size: AppResponsive.width(16))),) ],),), SizedBox(height: AppResponsive.height(24)), Text("Full Name", style: _textStyles.medium(fontSize: 13, color: AppColors.neutral700)), SizedBox(height: AppResponsive.height(8)), TextFormField(controller: _nameController, decoration: _inputDecoration(hintText: "Enter your full name"), validator: (value) => value == null || value.isEmpty ? "Name cannot be empty" : null,), SizedBox(height: AppResponsive.height(16)), Text("Phone Number", style: _textStyles.medium(fontSize: 13, color: AppColors.neutral700)), SizedBox(height: AppResponsive.height(8)), TextFormField(controller: _phoneController, keyboardType: TextInputType.phone, decoration: _inputDecoration(hintText: "Enter your phone number"), validator: (value) => value == null || value.isEmpty ? "Phone cannot be empty" : null,), SizedBox(height: AppResponsive.height(16)), Text("Email", style: _textStyles.medium(fontSize: 13, color: AppColors.neutral700)), SizedBox(height: AppResponsive.height(8)), TextFormField(controller: _emailController, keyboardType: TextInputType.emailAddress, decoration: _inputDecoration(hintText: "Enter your email"), validator: (value) { if (value == null || value.isEmpty) return "Email cannot be empty"; if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) return "Enter a valid email"; return null; },), SizedBox(height: AppResponsive.height(30)), Row(children: [ Expanded(child: OutlinedButton(onPressed: _toggleEditMode, style: OutlinedButton.styleFrom(side: const BorderSide(color: AppColors.neutral300), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(25))), padding: EdgeInsets.symmetric(vertical: AppResponsive.height(14)),), child: Text(AppStrings.cancel, style: _textStyles.semiBold(fontSize: 16, color: AppColors.textSecondary)),),), SizedBox(width: AppResponsive.width(16)), Expanded(child: ElevatedButton(onPressed: _saveProfileChanges, style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary500, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(25))), padding: EdgeInsets.symmetric(vertical: AppResponsive.height(14)),), child: Text(AppStrings.save, style: _textStyles.semiBold(fontSize: 16, color: AppColors.white)),),), ],) ],),),); }
+  InputDecoration _inputDecoration({required String hintText}) { return InputDecoration(hintText: hintText, hintStyle: _textStyles.regular(color: AppColors.neutral400, fontSize: 14), filled: true, fillColor: AppColors.neutral50, contentPadding: EdgeInsets.symmetric(horizontal: AppResponsive.width(16), vertical: AppResponsive.height(14)), border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.neutral200, width: 1)), enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.neutral200, width: 1)), focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)), borderSide: BorderSide(color: AppColors.primary300, width: 1.5)),); }
   Widget _buildLogoutButton() { return ElevatedButton.icon(icon: const Icon(Icons.logout_outlined, color: AppColors.primary500, size: 22), label: Text(AppStrings.logout, style: _textStyles.semiBold(color: AppColors.primary500, fontSize: 16),), onPressed: _handleLogout, style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary50, elevation: 0, padding: EdgeInsets.symmetric(vertical: AppResponsive.height(16)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(12)),), shadowColor: Colors.transparent,),); }
-  Widget _buildProfileMenuSection1() { return _buildSectionContainer(children: [ _buildMenuItem(icon: Icons.location_on_outlined, title: AppStrings.myLocations, onTap: () => _navigateTo(MyLocationsScreen(onAppBarBackPressed: widget.onAppBarBackPressed))), _buildMenuItem(icon: Icons.local_offer_outlined, title: AppStrings.myPromotions, onTap: () => _navigateTo(const PromotionInformationScreen())), _buildMenuItem(icon: Icons.payment_outlined, title: AppStrings.paymentMethods, onTap: () => _navigateTo(PaymentMethodsScreen(onAppBarBackPressed: widget.onAppBarBackPressed))), _buildMenuItem(icon: Icons.chat_bubble_outline, title: AppStrings.messages, onTap: () => _navigateTo(MessagesScreen(onAppBarBackPressed: widget.onAppBarBackPressed))), _buildMenuItem(icon: Icons.people_alt_outlined, title: AppStrings.inviteFriends, onTap: () => _navigateTo(const InviteFriendsScreen())), _buildMenuItem(icon: Icons.security_outlined, title: AppStrings.security, onTap: () => _navigateTo(SecurityScreen(onAppBarBackPressed: widget.onAppBarBackPressed))), _buildMenuItem(icon: Icons.help_outline, title: AppStrings.helpCenter, onTap: () => _navigateTo(HelpCenterScreen(onAppBarBackPressed: widget.onAppBarBackPressed)), hasDivider: false), ],); }
+  Widget _buildProfileMenuSection1() { return _buildSectionContainer(children: [ _buildMenuItem(icon: Icons.location_on_outlined, title: AppStrings.myLocations, onTap: () => _navigateTo(const MyLocationsScreen())), _buildMenuItem(icon: Icons.local_offer_outlined, title: AppStrings.myPromotions, onTap: () => _navigateTo(const PromotionInformationScreen())), _buildMenuItem(icon: Icons.payment_outlined, title: AppStrings.paymentMethods, onTap: () => _navigateTo(const PaymentMethodsScreen())), _buildMenuItem(icon: Icons.chat_bubble_outline, title: AppStrings.messages, onTap: () => _navigateTo(const MessagesScreen())), _buildMenuItem(icon: Icons.people_alt_outlined, title: AppStrings.inviteFriends, onTap: () => _navigateTo(const InviteFriendsScreen())), _buildMenuItem(icon: Icons.security_outlined, title: AppStrings.security, onTap: () => _navigateTo(const SecurityScreen())), _buildMenuItem(icon: Icons.help_outline, title: AppStrings.helpCenter, onTap: () => _navigateTo(const HelpCenterScreen()), hasDivider: false), ],); }
   Widget _buildProfileMenuSection2() { return _buildSectionContainer(children: [ _buildMenuItem(icon: Icons.article_outlined, title: AppStrings.termOfService, onTap: () => _navigateTo(const TermOfServiceScreen())), _buildMenuItem(icon: Icons.privacy_tip_outlined, title: AppStrings.privacyPolicy, onTap: () => _navigateTo(const PrivacyPolicyScreen())), _buildMenuItem(icon: Icons.info_outline, title: AppStrings.aboutApp, onTap: () => _navigateTo(const AboutAppScreen()), hasDivider: false), ],); }
   Widget _buildMenuItem({required IconData icon, required String title, required VoidCallback onTap, bool hasDivider = true}) { return Column(mainAxisSize: MainAxisSize.min, children: [ ListTile(leading: Icon(icon, color: AppColors.neutral700, size: AppResponsive.width(22)), title: Text(title, style: _textStyles.regular(color: AppColors.textPrimary, fontSize: 14)), trailing: Icon(Icons.arrow_forward_ios, color: AppColors.neutral400, size: AppResponsive.width(16)), contentPadding: EdgeInsets.symmetric(vertical: AppResponsive.height(6), horizontal: AppResponsive.width(16)), dense: true, onTap: onTap,), if(hasDivider) Divider(height: 0.5, indent: AppResponsive.width(16+22+16.0), color: AppColors.neutral100, thickness: 0.5,) ],); }
   Widget _buildLanguageSection() { return _buildSectionContainer(children: [ListTile(leading: Icon(Icons.language_outlined, color: AppColors.neutral700, size: AppResponsive.width(22)), title: Text(AppStrings.language, style: _textStyles.regular(color: AppColors.textPrimary, fontSize: 14)), trailing: DropdownButtonHideUnderline(child: DropdownButton<String>(value: _selectedLanguage, icon: const Icon(Icons.keyboard_arrow_down, color: AppColors.neutral500), elevation: 2, style: _textStyles.regular(color: AppColors.primary500, fontSize: 14), onChanged: (String? newValue) { if (newValue != null) { setState(() { _selectedLanguage = newValue; });} }, items: <String>[AppStrings.english, AppStrings.uzbek, AppStrings.russian].map<DropdownMenuItem<String>>((String value) { return DropdownMenuItem<String>(value: value, child: Text(value)); }).toList(),),), contentPadding: EdgeInsets.only(left: AppResponsive.width(16), right: AppResponsive.width(16), top: AppResponsive.height(6), bottom: AppResponsive.height(6)), dense: true,),]); }

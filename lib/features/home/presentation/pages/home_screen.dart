@@ -4,11 +4,11 @@ import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';
 import 'package:food_delivery/core/common/text_styles/name_textstyles.dart';
+import '../widgets/home_widgets/home_screen_content.dart';
 import 'package:food_delivery/features/orders/presentation/pages/orders_screen.dart';
 import 'package:food_delivery/features/likes/presentation/pages/liked_screen.dart';
 import 'package:food_delivery/features/notifications/presentation/pages/notification_screen.dart';
 import 'package:food_delivery/features/profile/presentation/pages/profile_screen.dart';
-import '../widgets/home_widgets/home_screen_content.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,38 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
   late PageController _pageController;
 
   final List<Map<String, dynamic>> _promoBannersData = [
-    {
-      'image': 'assets/images/promos/banner1.png',
-      'line1': AppStrings.iceCreamDay,
-      'line2': AppStrings.getYourSweetIceCream,
-      'line3': AppStrings.fortyPercentOff,
-      'bgColor': '#FAB53C',
-      'line1Color': AppColors.white,
-      'line2Color': AppColors.white,
-      'line3Color': AppColors.white,
-    },
-    {
-      'image': 'assets/images/promos/banner2.png',
-      'line1': AppStrings.greenDay,
-      'line2': AppStrings.upToSixtyPercentOff,
-      'line3': AppStrings.saladCategory,
-      'bgColor': '#095C47',
-      'line1Color': AppColors.white,
-      'line2Color': AppColors.green200,
-      'line3Color': AppColors.white,
-    },
-    {
-      'image': 'assets/images/promos/banner3.png',
-      'line1': AppStrings.couplesDeal,
-      'line2': AppStrings.doubleHappiness,
-      'line3': AppStrings.happyValentinesDay,
-      'bgColor': '#000000',
-      'line1Color': AppColors.white,
-      'line2Color': AppColors.primary200,
-      'line3Color': AppColors.white,
-    },
+    {'image': 'assets/images/promos/banner1.png', 'line1': AppStrings.iceCreamDay, 'line2': AppStrings.getYourSweetIceCream, 'line3': AppStrings.fortyPercentOff, 'bgColor': '#FAB53C', 'line1Color': AppColors.white, 'line2Color': AppColors.white, 'line3Color': AppColors.white,},
+    {'image': 'assets/images/promos/banner2.png', 'line1': AppStrings.greenDay, 'line2': AppStrings.upToSixtyPercentOff, 'line3': AppStrings.saladCategory, 'bgColor': '#095C47', 'line1Color': AppColors.white, 'line2Color': AppColors.green200, 'line3Color': AppColors.white,},
+    {'image': 'assets/images/promos/banner3.png', 'line1': AppStrings.couplesDeal, 'line2': AppStrings.doubleHappiness, 'line3': AppStrings.happyValentinesDay, 'bgColor': '#000000', 'line1Color': AppColors.white, 'line2Color': AppColors.primary200, 'line3Color': AppColors.white,},
   ];
-  final List<Map<String, dynamic>> _categoriesData = [
+
+  final List<Map<String, dynamic>> _homeScreenCategoriesData = [
     {'name': "Burger", 'imagePath': 'assets/images/categories/burger.png'},
     {'name': "Taco", 'imagePath': 'assets/images/categories/taco.png'},
     {'name': "Burrito", 'imagePath': 'assets/images/categories/burrito.png'},
@@ -64,87 +38,19 @@ class _HomeScreenState extends State<HomeScreen> {
     {'name': "Noodles", 'imagePath': 'assets/images/categories/noodles.png'},
     {'name': "Sandwich", 'imagePath': 'assets/images/categories/sandwich.png'},
     {'name': "Pasta", 'imagePath': 'assets/images/categories/pasta.png'},
-    {
-      'name': "Ice Cream",
-      'imagePath': 'assets/images/categories/ice cream.png',
-    },
+    {'name': "Ice Cream", 'imagePath': 'assets/images/categories/ice cream.png'},
     {'name': AppStrings.more, 'imagePath': 'assets/images/categories/more.png'},
   ];
 
   final List<Map<String, String>> _specialOffersData = [
-    {
-      'id': '1',
-      'image': 'assets/images/offers/offer1.png',
-      'name': 'Chicken Burger',
-      'price': '£6.00',
-      'oldPrice': '£10.00',
-      'rating': '4.9',
-      'isLiked': 'true',
-    },
-    {
-      'id': '2',
-      'image': 'assets/images/offers/offer2.png',
-      'name': 'Beef Burger',
-      'price': '£10.00',
-      'oldPrice': '£12.00',
-      'rating': '4.9',
-      'isLiked': 'true',
-    },
-    {
-      'id': '3',
-      'image': 'assets/images/offers/offer3.png',
-      'name': 'Turkey Burger',
-      'price': '£15.00',
-      'oldPrice': '£22.00',
-      'rating': '4.9',
-      'isLiked': 'true',
-    },
-    {
-      'id': '4',
-      'image': 'assets/images/offers/offer4.png',
-      'name': 'Pork Burger',
-      'price': '£10.00',
-      'oldPrice': '£12.00',
-      'rating': '4.9',
-      'isLiked': 'true',
-    },
-    {
-      'id': '5',
-      'image': 'assets/images/offers/offer5.png',
-      'name': 'Vegetarian Burger',
-      'price': '£5.00',
-      'oldPrice': '£10.00',
-      'rating': '4.9',
-      'isLiked': 'true',
-    },
-
-    {
-      'id': '6',
-      'image': 'assets/images/offers/offer6.png',
-      'name': 'Fresh Garden Salad',
-      'price': '£7.50',
-      'oldPrice': '0',
-      'rating': '4.6',
-      'isLiked': 'true',
-    },
-    {
-      'id': '7',
-      'image': 'assets/images/offers/offer7.png',
-      'name': 'Lamb Burger',
-      'price': '£3.00',
-      'oldPrice': '£3.50',
-      'rating': '4.9',
-      'isLiked': 'true',
-    },
-    {
-      'id': '8',
-      'image': 'assets/images/offers/offer8.png',
-      'name': 'Strawberry Delight Ice Cream',
-      'price': '£4.50',
-      'oldPrice': '',
-      'rating': '4.9',
-      'isLiked': 'true',
-    },
+    {'id': '1', 'image': 'assets/images/offers/offer1.png', 'name': 'Chicken Burger', 'price': '£6.00', 'oldPrice': '£10.00', 'rating': '4.9', 'isLiked': 'true'},
+    {'id': '2', 'image': 'assets/images/offers/offer2.png', 'name': 'Beef Burger', 'price': '£10.00', 'oldPrice': '£12.00', 'rating': '4.9', 'isLiked': 'true'},
+    {'id': '3', 'image': 'assets/images/offers/offer3.png', 'name': 'Ramen Noodles', 'price': '£15.00', 'oldPrice': '£22.00', 'rating': '4.9', 'isLiked': 'ture'},
+    {'id': '4', 'image': 'assets/images/offers/offer4.png', 'name': 'Pork Burger', 'price': '£10.00', 'oldPrice': '£12.00', 'rating': '4.9', 'isLiked': 'true'},
+    {'id': '5', 'image': 'assets/images/offers/offer5.png', 'name': 'Vegetarian Burger', 'price': '£5.00', 'oldPrice': '£10.00', 'rating': '4.9', 'isLiked': 'true'},
+    {'id': '6', 'image': 'assets/images/offers/offer6.png', 'name': 'Pepperoni Special', 'price': '£9.50', 'oldPrice': '£12.00', 'rating': '4.8', 'isLiked': 'true'},
+    {'id': '7', 'image': 'assets/images/offers/offer7.png', 'name': 'Greek Salad Bowl', 'price': '£6.50', 'oldPrice': '', 'rating': '4.6', 'isLiked': 'true'},
+    {'id': '8', 'image': 'assets/images/offers/offer8.png', 'name': 'Fresh Fruit', 'price': '£6.50', 'oldPrice': '', 'rating': '4.7', 'isLiked': 'true'},
 
   ];
 
@@ -173,17 +79,17 @@ class _HomeScreenState extends State<HomeScreen> {
     _screens = [
       HomeScreenContent(
         promoBannersData: _promoBannersData,
-        categoriesData: _categoriesData,
+        categoriesData: _homeScreenCategoriesData,
         specialOffersData: _specialOffersData,
         onLikeToggleInDataSource: _handleLikeToggleFromHome,
       ),
-      const OrdersScreen(),
+      OrdersScreen(onAppBarBackPressed: _navigateToHomeTab),
       LikedScreen(
         allOffersDataRef: _specialOffersData,
         onAppBarBackPressed: _navigateToHomeTab,
       ),
       NotificationScreen(onAppBarBackPressed: _navigateToHomeTab),
-      const ProfileScreen(),
+      ProfileScreen(onAppBarBackPressed: _navigateToHomeTab),
     ];
   }
 
@@ -196,21 +102,12 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _handleLikeToggleFromHome(
-      int originalIndexInSpecialOffers,
-      bool newLikeState,
-      ) {
-    if (mounted &&
-        originalIndexInSpecialOffers >= 0 &&
-        originalIndexInSpecialOffers < _specialOffersData.length) {
+  void _handleLikeToggleFromHome(int originalIndexInSpecialOffers, bool newLikeState) {
+    if (mounted && originalIndexInSpecialOffers >= 0 && originalIndexInSpecialOffers < _specialOffersData.length) {
       setState(() {
-        _specialOffersData[originalIndexInSpecialOffers]['isLiked'] =
-            newLikeState.toString();
+        _specialOffersData[originalIndexInSpecialOffers]['isLiked'] = newLikeState.toString();
         _buildScreensList();
       });
-      print(
-        "HomeScreen: Item '${_specialOffersData[originalIndexInSpecialOffers]['name']}' like state: $newLikeState",
-      );
     }
   }
 
@@ -308,42 +205,11 @@ class _HomeScreenState extends State<HomeScreen> {
           showUnselectedLabels: false,
           elevation: 8.0,
           items: [
-            _buildBottomNavItem(
-              index: 0,
-              inactiveIconPath:
-              'assets/icons/bottom_nav/home_icon_inactive.svg',
-              activeIconPath: 'assets/icons/bottom_nav/home_icon_active.svg',
-              label: AppStrings.home,
-            ),
-            _buildBottomNavItem(
-              index: 1,
-              inactiveIconPath:
-              'assets/icons/bottom_nav/orders_icon_inactive.svg',
-              activeIconPath: 'assets/icons/bottom_nav/orders_icon_active.svg',
-              label: AppStrings.orders,
-            ),
-            _buildBottomNavItem(
-              index: 2,
-              inactiveIconPath:
-              'assets/icons/bottom_nav/liked_icon_inactive.svg',
-              activeIconPath: 'assets/icons/bottom_nav/liked_icon_active.svg',
-              label: AppStrings.liked,
-            ),
-            _buildBottomNavItem(
-              index: 3,
-              inactiveIconPath:
-              'assets/icons/bottom_nav/notification_icon_inactive.svg',
-              activeIconPath:
-              'assets/icons/bottom_nav/notification_icon_active.svg',
-              label: AppStrings.notify,
-            ),
-            _buildBottomNavItem(
-              index: 4,
-              inactiveIconPath:
-              'assets/icons/bottom_nav/profile_icon_inactive.svg',
-              activeIconPath: 'assets/icons/bottom_nav/profile_icon_active.svg',
-              label: AppStrings.profile,
-            ),
+            _buildBottomNavItem(index: 0, inactiveIconPath: 'assets/icons/bottom_nav/home_icon_inactive.svg', activeIconPath: 'assets/icons/bottom_nav/home_icon_active.svg', label: AppStrings.home,),
+            _buildBottomNavItem(index: 1, inactiveIconPath: 'assets/icons/bottom_nav/orders_icon_inactive.svg', activeIconPath: 'assets/icons/bottom_nav/orders_icon_active.svg', label: AppStrings.orders,),
+            _buildBottomNavItem(index: 2, inactiveIconPath: 'assets/icons/bottom_nav/liked_icon_inactive.svg', activeIconPath: 'assets/icons/bottom_nav/liked_icon_active.svg', label: AppStrings.liked,),
+            _buildBottomNavItem(index: 3, inactiveIconPath: 'assets/icons/bottom_nav/notification_icon_inactive.svg', activeIconPath: 'assets/icons/bottom_nav/notification_icon_active.svg', label: AppStrings.notify,),
+            _buildBottomNavItem(index: 4, inactiveIconPath: 'assets/icons/bottom_nav/profile_icon_inactive.svg', activeIconPath: 'assets/icons/bottom_nav/profile_icon_active.svg', label: AppStrings.profile,),
           ],
         ),
       ),

@@ -50,7 +50,7 @@ class _SpecialOffersPageState extends State<SpecialOffersPage> {
       'isLiked': 'false',
     },
     {
-      'image': 'assets/images/offers/offer8.png',
+      'image': 'assets/images/offers/offer5.png',
       'name': 'Fresh Fruit Donuts',
       'price': '£5.00',
       'oldPrice': '£6.00',
@@ -75,11 +75,11 @@ class _SpecialOffersPageState extends State<SpecialOffersPage> {
     },
     {
       'image': 'assets/images/offers/offer8.png',
-      'name': 'Double Beef Burger',
+      'name': 'Fresh Fruit',
       'price': '£11.00',
       'oldPrice': '£13.00',
       'rating': '4.7',
-      'isLiked': 'false',
+      'isLiked': 'true',
     },
   ];
 

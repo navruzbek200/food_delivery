@@ -18,8 +18,7 @@ class VerificationScreen extends StatefulWidget {
   const VerificationScreen({
     Key? key,
     this.verificationTarget,
-    required this.purpose,
-    // required String verificationTargetEmail,
+    required this.purpose, required String verificationTargetEmail,
   }) : super(key: key);
 
   @override

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
-
 import '../../../../core/common/constants/colors/app_colors.dart';
 import '../../../../core/common/constants/strings/app_string.dart';
 import '../../../../core/common/text_styles/name_textstyles.dart';
-import '../../../category/presentation/pages/category_items_screen.dart';
+import 'category_items_screen.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({Key? key}) : super(key: key);
+  const CategoriesScreen({Key? key, required List allCategoriesData}) : super(key: key);
 
   static final List<Map<String, String>> _allActualCategoriesData = [
     {'name': "Burger", 'imagePath': 'assets/images/categories/burger.png'},
@@ -38,6 +37,12 @@ class CategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final categoriesToShow = _allActualCategoriesData;
 
+    // Agar categoriesToShow bo'sh bo'lsa, nima bo'lishini tekshirish uchun print:
+    print("CategoriesScreen: Number of categories to show: ${categoriesToShow.length}");
+    if (categoriesToShow.isEmpty) {
+      print("CategoriesScreen: _allActualCategoriesData is empty or filtered to empty!");
+    }
+
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -54,7 +59,14 @@ class CategoriesScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: GridView.builder(
+      body: categoriesToShow.isEmpty // Agar ro'yxat bo'sh bo'lsa, xabar ko'rsatish
+          ? Center(
+        child: Text(
+          "No categories available at the moment.", // Yoki AppStrings dan
+          style: _textStyles.regular(color: AppColors.neutral500, fontSize: 16),
+        ),
+      )
+          : GridView.builder(
         padding: EdgeInsets.all(AppResponsive.width(24)),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
@@ -66,8 +78,8 @@ class CategoriesScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final category = categoriesToShow[index];
           final String categoryName = category['name'] ?? "N/A";
-          final String categoryIconPath = category['imagePath'] ?? "assets/images/placeholder.png";
-          bool isSvg = categoryIconPath.toLowerCase().endsWith('.svg');
+          final String categoryIconPath = category['imagePath'] ?? "assets/images/placeholder.png"; // Placeholder qo'shildi
+          categoryIconPath.toLowerCase().endsWith('.svg');
 
           return GestureDetector(
             onTap: () {
@@ -92,9 +104,15 @@ class CategoriesScreen extends StatelessWidget {
                     color: AppColors.neutral50,
                     borderRadius: BorderRadius.circular(AppResponsive.height(16)),
                   ),
-                  child: isSvg
-                      ? Image.asset(categoryIconPath)
-                      : Image.asset(categoryIconPath),
+                  child: Image.asset( // SVG bo'lsa ham Image.asset ishlashi mumkin, lekin flutter_svg aniqroq
+                    categoryIconPath,
+                    fit: BoxFit.contain, // Rasm sig'ishi uchun
+                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                      // Rasm yuklanmasa, placeholder ikonka
+                      print("Error loading category icon: $categoryIconPath");
+                      return const Icon(Icons.image_not_supported_outlined, color: AppColors.neutral300, size: 30);
+                    },
+                  ),
                 ),
                 SizedBox(height: AppResponsive.height(8)),
                 Text(
