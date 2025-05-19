@@ -255,7 +255,52 @@ abstract class AppStrings {
   static const String addNewAddress = "Add New Address";
 
   static const String noLocationsAdded = "No locations added";
+  static const String orderSummary = "Order Summary";
+  static const String paymentMethod = "Payment method";
+  static const String promotions = "Promotions";
+  static const String subtotal = "Subtotal";
+  static const String deliveryFee = "Delivery Fee";
+  static const String discount = "Discount";
+  static const String total = "Total";
+  static const String free = "FREE";
+  static const String unknown = "Unknown";
+  static const String orderDetails = "Order Details";
+  static const String cancelOrder = "Cancel Order";
+  static const String trackOrder = "Track Order";
+  static const String reorder = "Reorder";
+  static const String reasonForCancellation = "Reason for Cancellation";
+  static const String rateYourOrder = "Rate Your Order";
+  static const String typeYourReview = "Type your review ...";
+  static const String cancelOrderTitle = "Cancel Order";
+  static const String cancelReasonChangeMind = "Change of mind";
+  static const String cancelReasonFoundBetterPrice = "Found better price elsewhere";
+  static const String cancelReasonDeliveryDelay = "Delivery delay";
+  static const String cancelReasonIncorrectItem = "Incorrect item selected";
+  static const String cancelReasonDuplicateOrder = "Duplicate order";
+  static const String cancelReasonUnableToFulfill = "Unable to fulfill order";
+  static const String cancelReasonOther = "Other reasons";
+  static const String otherReasonHint = "Other reason ...";
+  static const String submit = "Submit";
+  static const String yourOrderCanceled = "Your Order Canceled";
+  static const String orderCancellationInfo = "We're sorry to see your order go. 😔\nWe're always striving to improve, and we hope to serve you better next time!";
+  static const String ok = "Ok";
+
+
+
+  static const String notAvailable = "N/A";
+  static const String addressNotProvided = "Address not provided";
+
+  static const String noPromotionsApplied = "No Promotions Applied";
+  static const String trackOrderTitle = "Order Tracking";
+  static const String estimatedDeliveryTime = "Estimated Delivery Time";
+  static const String myOrder = "My Order";
+  static const String details = "Details";
+
+  static const String orderCompletedStatus = "Order Completed";
   }
+
+
+
 
 
 
