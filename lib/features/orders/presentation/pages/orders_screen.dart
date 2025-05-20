@@ -75,7 +75,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
       'cancellationReason': 'Duplicate order by mistake.',
     },
   ];
-
   List<Map<String, dynamic>> _filteredOrders = [];
   late List<String> _filterStatuses;
 
@@ -175,21 +174,18 @@ class _OrdersScreenState extends State<OrdersScreen> {
         final orderDataMap = _filteredOrders[index];
         return OrderItemCardWidget(
           orderData: orderDataMap,
-          onTap: () async { // async qilib o'zgartiramiz
-            final result = await Navigator.push( // await qo'shamiz
+          onTap: () async {
+            final result = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => OrderDetailScreen(
-                  initialOrderData: orderDataMap, // 'initialOrderData' parametri ishlatiladi
+                  initialOrderData: orderDataMap,
                   onAppBarBackPressed: widget.onAppBarBackPressed,
                 ),
               ),
             );
-            // Agar OrderDetailScreen dan (masalan, CancelOrderScreen dan keyin)
-            // true qiymat qaytsa (buyurtma statusi o'zgargan bo'lsa),
-            // OrdersScreen UI sini yangilaymiz
             if (result == true && mounted) {
-              _applyFilters(); // Yoki faqat setState(() {});
+              _applyFilters();
             }
           },
         );

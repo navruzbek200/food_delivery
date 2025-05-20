@@ -65,10 +65,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           backgroundColor: AppColors.white,
           elevation: 0.5,
           shadowColor: AppColors.neutral100,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: AppColors.neutral800, size: 20),
-            onPressed: widget.onAppBarBackPressed ?? () => Navigator.pop(context, _currentOrderData['status'] != widget.initialOrderData['status']),
-          ),
           title: Text(
             _currentOrderData['id'] as String? ?? AppStrings.orderDetails,
             style: _textStyles.semiBold(color: AppColors.neutral900, fontSize: 18),
