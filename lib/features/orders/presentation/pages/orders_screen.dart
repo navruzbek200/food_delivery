@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';
 import 'package:food_delivery/core/common/text_styles/name_textstyles.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
+import 'package:food_delivery/features/orders/presentation/bloc/all_order/all_order_bloc.dart';
+import 'package:food_delivery/features/orders/presentation/bloc/all_order/all_order_state.dart';
+import 'package:food_delivery/features/orders/presentation/bloc/order_event.dart';
+import 'package:logger/logger.dart';
 import '../widgets/order_search_bar_widget.dart';
 import '../widgets/order_filter_tabs_widget.dart';
 import '../widgets/order_item_card_widget.dart';
@@ -78,9 +83,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
   List<Map<String, dynamic>> _filteredOrders = [];
   late List<String> _filterStatuses;
 
+  var logger = Logger();
+
   @override
   void initState() {
     super.initState();
+    context.read<AllOrderBloc>().add(AllOrderEvent());
     _filterStatuses = [AppStrings.all, AppStrings.active, AppStrings.completed, AppStrings.cancelled];
     _selectedStatusFilter = _filterStatuses[0];
     _applyFilters();
@@ -140,6 +148,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
             onFilterTabSelected: _onFilterTabSelected,
             statuses: _filterStatuses,
           ),
+          BlocBuilder<AllOrderBloc,AllOrderState>(builder: (context,state){
+            if(state is AllOrderLoading){return CircularProgressIndicator();}
+            if(state is AllOrderLoaded){return Text(state.orderEntity.id.toString());}
+            if(state is AllOrderError){return Text(state.message);}
+            return Text("return");
+          }),
           Expanded(
             child: _buildOrdersList(),
           ),
