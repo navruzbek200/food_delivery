@@ -17,8 +17,8 @@ Future<void> main() async {
         BlocProvider(create: (context) => sl<AllOrderBloc>()),
         BlocProvider(create: (context) => sl<ActiveOrderBloc>()),
         BlocProvider(create: (context) => sl<CompletedOrderBloc>()),
-        BlocProvider(create: (context) => sl<CreateOrderBloc>()),
         BlocProvider(create: (context) => sl<UpdateOrderBloc>()),
+        BlocProvider(create: (context) => sl<CreateOrderBloc>()),
       ],
       child: const MyApp()
   ));

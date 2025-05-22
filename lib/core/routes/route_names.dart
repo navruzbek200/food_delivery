@@ -23,7 +23,8 @@ class RouteNames{
   static const String homeScreen = "/homeScreen";
   static const String searchScreen = "/searchScreen";
   static const String specialOffersPage = "/specialOffersPage";
-
+  static const String foodDetailPage = "/foodDetailPage";
+  static const String myBasketScreen = "/myBasketScreen";
 
   // liked
   static const String likedScreen = "/likedScreen";
@@ -60,5 +61,8 @@ class RouteNames{
   // payment
   static const String addNewCardScreen = "/addNewCardScreen";
   static const String paymentMethodsScreen = "/paymentMethodsScreen";
+
+
+
 
 }
