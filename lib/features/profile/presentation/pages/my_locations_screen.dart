@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
-import 'package:food_delivery/features/profile/domain/entities/location_item.dart';
+import 'package:food_delivery/features/profile/domain/entities/location_item_entity.dart';
 
 import '../../../../core/common/constants/colors/app_colors.dart';
 import '../../../../core/common/constants/strings/app_string.dart';

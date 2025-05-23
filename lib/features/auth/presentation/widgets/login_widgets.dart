@@ -87,8 +87,8 @@ class EmailTextFormField extends StatelessWidget {
         textStyles: textStyles,
       ),
       validator:
-          validator ??
-          (value) {
+      validator ??
+              (value) {
             if (value == null || value.isEmpty)
               return AppStrings.pleaseEnterEmail;
             if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value))
@@ -141,9 +141,9 @@ class PasswordTextFormField extends StatelessWidget {
       ),
       validator: validator,
       textInputAction:
-          onFieldSubmitted != null
-              ? TextInputAction.done
-              : TextInputAction.next,
+      onFieldSubmitted != null
+          ? TextInputAction.done
+          : TextInputAction.next,
       onFieldSubmitted: onFieldSubmitted,
     );
   }
@@ -217,7 +217,7 @@ class PrimaryElevatedButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor:
-              isEnabled ? AppColors.primary500 : AppColors.primary200,
+          isEnabled ? AppColors.primary500 : AppColors.primary200,
           padding: EdgeInsets.symmetric(vertical: AppResponsive.height(16)),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppResponsive.height(28)),
@@ -314,10 +314,10 @@ class SocialLoginIcons extends StatelessWidget {
         width: AppResponsive.width(24),
         errorBuilder:
             (context, error, stackTrace) => Icon(
-              Icons.error,
-              size: AppResponsive.height(24),
-              color: AppColors.neutral400,
-            ),
+          Icons.error,
+          size: AppResponsive.height(24),
+          color: AppColors.neutral400,
+        ),
       ),
       onPressed: onPressed,
       padding: EdgeInsets.zero,

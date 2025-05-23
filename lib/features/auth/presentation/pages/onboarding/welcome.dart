@@ -34,7 +34,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const OnboardingScreen()),
     );
-    print("Welcome screen done, navigating to Onboarding screen...");
   }
 
   @override

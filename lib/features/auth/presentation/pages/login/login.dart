@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
+import 'package:food_delivery/core/routes/route_names.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';
 import 'package:food_delivery/features/auth/presentation/pages/signup/sign_up.dart';
 import 'package:food_delivery/features/auth/presentation/pages/forgot_password/forgot_password.dart';
-import 'package:food_delivery/features/home/presentation/pages/home_screen.dart';
 import '../../../../../core/common/text_styles/name_textstyles.dart';
+import '../../bloc/auth_event.dart';
+import '../../bloc/login/login_bloc.dart';
+import '../../bloc/login/login_state.dart';
 import '../../widgets/login_widgets.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -21,13 +25,32 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _textStyles = RobotoTextStyles();
 
+  FocusNode focusNode1 = FocusNode();
+  FocusNode focusNode2 = FocusNode();
+
+  bool _password = true;
   bool _rememberMe = false;
   bool _obscurePassword = true;
   bool _isSignInEnabled = false;
+  bool _text_field_1_color = false;
+  bool _text_field_2_color = false;
+
 
   @override
   void initState() {
     super.initState();
+
+    focusNode1.addListener(() {
+      setState(() {
+        _text_field_1_color = focusNode1.hasFocus;
+      });
+    });
+    focusNode2.addListener(() {
+      setState(() {
+        _text_field_2_color = focusNode2.hasFocus;
+      });
+    });
+
     _emailController.addListener(_updateSignInButtonState);
     _passwordController.addListener(_updateSignInButtonState);
   }
@@ -38,6 +61,9 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.removeListener(_updateSignInButtonState);
     _emailController.dispose();
     _passwordController.dispose();
+
+    focusNode1.dispose();
+    focusNode2.dispose();
     super.dispose();
   }
 
@@ -63,18 +89,10 @@ class _LoginScreenState extends State<LoginScreen> {
   void _handleLogin() {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState?.validate() ?? false) {
+      logIn();
       print(
         'Login Attempt: Email: ${_emailController.text}, Remember Me: $_rememberMe',
       );
-      bool loginSuccess = true;
-      if (!mounted) return;
-      if (loginSuccess) {
-        print("Login successful! Navigating to HomeScreen...");
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-          (Route<dynamic> route) => false,
-        );
-      }
     } else {
       print('Login form is invalid');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -109,6 +127,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _onContinueWithApple() {
     print("Continue with Apple");
+  }
+
+  void logIn(){
+    context.read<LoginBloc>().add(LoginEvent(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim()),);
   }
 
   @override
@@ -163,17 +187,38 @@ class _LoginScreenState extends State<LoginScreen> {
                     textStyles: _textStyles,
                   ),
                   SizedBox(height: AppResponsive.height(30)),
-                  PrimaryElevatedButton(
-                    buttonText: AppStrings.signIn,
-                    isEnabled: _isSignInEnabled,
-                    onPressed: _handleLogin,
-                    textStyles: _textStyles,
+
+                  BlocConsumer<LoginBloc, LoginState>(
+                      builder: (context, state) {
+                        if (state is LoginLoading) {
+                            return CircularProgressIndicator();
+                        }
+                        return PrimaryElevatedButton(
+                          buttonText: AppStrings.signIn,
+                          isEnabled: _isSignInEnabled,
+                          onPressed: _handleLogin,
+                          textStyles: _textStyles,
+                        );
+                      },
+                      listener: (context, state) {
+                        if(state is LoginLoaded){
+                          Navigator.pushReplacementNamed(context, RouteNames.homeScreen);
+                        }
+                        if(state is LoginError){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Error is occured")),
+                          );
+                        }
+                      },
                   ),
+
                   SizedBox(height: AppResponsive.height(16)),
+
                   ForgotPasswordButton(
                     onPressed: _forgotPassword,
                     textStyles: _textStyles,
                   ),
+
                   SizedBox(height: AppResponsive.height(30)),
                   OrDividerWithText(
                     text: AppStrings.orSignIn,

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';
 import 'package:food_delivery/core/common/text_styles/name_textstyles.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 import 'package:pinput/pinput.dart';
+
+import '../bloc/auth_event.dart';
+import '../bloc/confirmEmail/confirmEmail_bloc.dart';
 
 class VerificationAppBarTitle extends StatelessWidget {
   final String titleText;
@@ -131,9 +135,12 @@ class ResendCodeSection extends StatelessWidget {
   final bool canResend;
   final VoidCallback onResendPressed;
   final RobotoTextStyles textStyles;
+  final String verificationTarget;
+
 
   const ResendCodeSection({
     Key? key,
+    required this.verificationTarget,
     required this.timerStartValue,
     required this.canResend,
     required this.onResendPressed,
@@ -198,7 +205,7 @@ class VerifyOtpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: AppResponsive.width(345), // yoki double.infinity va Padding bilan
+      width: AppResponsive.width(345),
       height: AppResponsive.height(53),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(

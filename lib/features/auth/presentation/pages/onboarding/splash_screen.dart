@@ -100,7 +100,6 @@ class _SplashScreenState extends State<SplashScreen>
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const WelcomeScreen()),
     );
-    print("Splash screen done, navigating to Welcome screen...");
   }
 
   @override

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';
 import 'package:food_delivery/core/common/text_styles/name_textstyles.dart';
+import 'package:food_delivery/features/auth/presentation/bloc/auth_event.dart';
+import 'package:food_delivery/features/auth/presentation/bloc/register/register_bloc.dart';
+import 'package:food_delivery/features/auth/presentation/bloc/register/register_state.dart';
+import 'package:logger/logger.dart';
 import '../login/login.dart';
 import '../otp_verification/verificationScreen.dart';
 
@@ -19,13 +24,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordController = TextEditingController();
   final _textStyles = RobotoTextStyles();
 
+  FocusNode focusNode1 = FocusNode();
+  FocusNode focusNode2 = FocusNode();
+  FocusNode focusNode3 = FocusNode();
+
+  bool _password = true;
   bool _rememberMe = false;
+
+  bool _text_field_1_color = false;
+  bool _text_field_2_color = false;
+
   bool _obscurePassword = true;
   bool _isRegisterEnabled = false;
 
   @override
   void initState() {
     super.initState();
+    focusNode1.addListener(() {
+      setState(() {
+        _text_field_1_color = focusNode1.hasFocus;
+      });
+    });
+    focusNode2.addListener(() {
+      setState(() {
+        _text_field_2_color = focusNode2.hasFocus;
+      });
+    });
     _emailController.addListener(_updateRegisterButtonState);
     _passwordController.addListener(_updateRegisterButtonState);
   }
@@ -36,6 +60,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _passwordController.removeListener(_updateRegisterButtonState);
     _emailController.dispose();
     _passwordController.dispose();
+    focusNode1.dispose();
+    focusNode2.dispose();
+    focusNode3.dispose();
     super.dispose();
   }
 
@@ -65,11 +92,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => VerificationScreen(
-            verificationTargetEmail: _emailController.text,
-            purpose: OtpVerificationPurpose.signUp,
-            verificationTarget: _emailController.text,
-          ),
+          builder: (context) => VerificationScreen(data: {
+            "verificationTargetEmail": _emailController.text,
+            "purpose": OtpVerificationPurpose.signUp,
+            "verificationTarget": _emailController.text,
+          }),
         ),
       );
     } else {
@@ -93,6 +120,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _onContinueWithFacebook() {}
   void _onContinueWithGoogle() {}
   void _onContinueWithApple() {}
+
+  void signUp(){
+    context.read<RegisterBloc>().add(RegisterEvent(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim()));
+      focusNode3.addListener(() => setState(() {}));
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,19 +212,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   SizedBox(height: AppResponsive.height(30)),
-                  SizedBox(
-                    width: double.infinity,
-                    height: AppResponsive.height(53),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: _isRegisterEnabled ? AppColors.primary500 : AppColors.primary200,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(28)),),
-                        elevation: _isRegisterEnabled ? 2 : 0,
-                      ),
-                      onPressed: _isRegisterEnabled ? _handleRegister : null,
-                      child: Text(AppStrings.register, style: _textStyles.semiBold(color: AppColors.white, fontSize: 16),),
+
+                  BlocListener<RegisterBloc, RegisterState>(
+                      listener: (context, state){
+                        if(state is RegisterLoaded){
+                            Navigator.pushReplacementNamed(context,'/verificationScreen', arguments: {
+                              'purpose': OtpVerificationPurpose.signUp,
+                              'verificationTarget': _emailController.text.trim(),
+                              'email':_emailController.text.trim(),
+                              'password': _passwordController.text.trim(),
+                            },);
+                        }
+                        if(state is RegisterError){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Error is occured")),
+                          );
+                        }
+                      },
+
+                      child:  BlocBuilder<RegisterBloc, RegisterState>(
+                        builder: (context, state) {
+                          if(state is RegisterLoading){
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return SizedBox(
+                            width: double.infinity,
+                            height: AppResponsive.height(53),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                signUp();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: _isRegisterEnabled ? AppColors.primary500 : AppColors.primary200,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(28)),),
+                                elevation: _isRegisterEnabled ? 2 : 0,
+                              ),
+                              child: Text(AppStrings.register, style: _textStyles.semiBold(color: AppColors.white, fontSize: 16),),
+                            ),
+                          );
+                        }
                     ),
                   ),
+
+
                   SizedBox(height: AppResponsive.height(30)),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(20)),
