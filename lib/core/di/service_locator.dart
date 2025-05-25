@@ -1,4 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:food_delivery/features/category/data/data_source/category_remote_data_source.dart';
+import 'package:food_delivery/features/category/data/repository/category_repository_impl.dart';
+import 'package:food_delivery/features/category/domain/repository/category_repository.dart';
+import 'package:food_delivery/features/category/domain/usecases/categories_usecase.dart';
+import 'package:food_delivery/features/category/domain/usecases/category_foods_usecase.dart';
+import 'package:food_delivery/features/category/presentation/bloc/categories/categories_bloc.dart';
+import 'package:food_delivery/features/category/presentation/bloc/category_foods/category_foods_bloc.dart';
+import 'package:food_delivery/features/category/presentation/bloc/singleCategory/single_category_bloc.dart';
 import 'package:food_delivery/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:food_delivery/features/home/data/repositories/home_repository_impl.dart';
 import 'package:food_delivery/features/home/domain/repositories/home_repository.dart';
@@ -28,12 +36,18 @@ Future<void> setup()async{
   sl.registerLazySingleton<HomeRemoteDataSource>(() => HomeRemoteDatasourceImpl(dio: sl()));
   sl.registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(homeRemoteDatasource: sl()));
 
+  sl.registerLazySingleton<CategoryRemoteDataSource>(() => CategoryRemoteDataSourceImpl(dio: sl()));
+  sl.registerLazySingleton<CategoryRepository>(() => CategoryRepositoryImpl(categoryRemoteDataSource: sl()));
+
   sl.registerLazySingleton<OrdersUsecase>(() => OrdersUsecase(ordersRepository: sl()));
   sl.registerLazySingleton<ActiveOrdersUseCase>(() => ActiveOrdersUseCase(ordersRepository: sl()));
   sl.registerLazySingleton<CompletedOrdersUseCase>(() => CompletedOrdersUseCase(ordersRepository: sl()));
   sl.registerLazySingleton<UpdateOrdersUsecase>(() => UpdateOrdersUsecase(ordersRepository: sl()));
 
   sl.registerLazySingleton<CreateOrderUseCase>(() => CreateOrderUseCase(homeRepository: sl()));
+  sl.registerLazySingleton<CategoriesUseCase>(() => CategoriesUseCase(categoryRepository: sl()));
+  sl.registerLazySingleton<CategoryFoodsUsecase>(() => CategoryFoodsUsecase(categoryRepository: sl()));
+
 
   sl.registerFactory<AllOrderBloc>(() => AllOrderBloc(ordersUsecase: sl()));
   sl.registerFactory<ActiveOrderBloc>(() => ActiveOrderBloc(activeOrdersUseCase: sl()));
@@ -41,4 +55,8 @@ Future<void> setup()async{
   sl.registerFactory<UpdateOrderBloc>(() => UpdateOrderBloc(updateOrdersUsecase: sl()));
 
   sl.registerFactory<CreateOrderBloc>(() => CreateOrderBloc(createOrderUseCase: sl()));
+  sl.registerFactory<CategoriesBloc>(() => CategoriesBloc(categoriesUseCase: sl()));
+  sl.registerFactory<SingleCategoryBloc>(() => SingleCategoryBloc(singleCategoryUseCase: sl()));
+  sl.registerFactory<CategoryFoodsBloc>(() => CategoryFoodsBloc(categoryFoodsUseCase: sl()));
+
 }

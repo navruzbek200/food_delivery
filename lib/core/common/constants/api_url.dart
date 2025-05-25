@@ -6,5 +6,10 @@ class ApiUrl {
   static String ordersAll = "$baseUrl/orders/all";
   static String ordersCompleted = "$baseUrl/orders/completed";
   static String ordersActive = "$baseUrl/orders/active";
+  // Categories
+  static String categories = "$baseUrl/categories";
+  static String categoriesId = "$baseUrl/categories/";
+  static String categoriesIdFoods = "$baseUrl/categories/";
+
 
 }
