@@ -11,7 +11,9 @@ import '../../features/auth/presentation/pages/otp_verification/verificationScre
 import '../../features/auth/presentation/pages/signup/sign_up.dart';
 import '../../features/help_center/presentation/pages/help_center_screen.dart';
 import '../../features/home/presentation/pages/categories.dart';
+import '../../features/home/presentation/pages/food_detail.dart';
 import '../../features/home/presentation/pages/home_screen.dart';
+import '../../features/home/presentation/pages/my_basket_screen.dart';
 import '../../features/home/presentation/pages/search.dart';
 import '../../features/home/presentation/pages/special_offers.dart';
 import '../../features/likes/presentation/pages/liked_screen.dart';
@@ -106,6 +108,11 @@ class AppRoute{
         return MaterialPageRoute(builder: (context) => ProfileScreen());
       case RouteNames.editProfileScreen:
         return MaterialPageRoute(builder: (context) => EditProfileScreen());
+      case RouteNames.foodDetailPage:
+        final aa = routeSettings.arguments as Map <String, dynamic>;
+        return MaterialPageRoute(builder: (context) => FoodDetailPage(foodItem: aa,));
+      case RouteNames.myBasketScreen:
+        return MaterialPageRoute(builder: (context) => MyBasketScreen());
 
       default:
         return MaterialPageRoute(

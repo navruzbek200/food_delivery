@@ -1,15 +1,12 @@
 abstract class AppStrings {
   static const String appName = "SPEEDY CHOW";
   static const String appVersion = "Version 2.1.0";
-
   static const String skip = "Skip";
   static const String next = "Next";
   static const String startEnjoying = "Start enjoying";
-
   static const String splashTagline =
       "As fast as lightning,\nas delicious as thunder!";
   static const String welcomeTo = "Welcome to";
-
   static const String letsYouIn = "Let's you in";
   static const String continueWithFacebook = "Continue with Facebook";
   static const String continueWithGoogle = "Continue with Google";
@@ -53,13 +50,11 @@ abstract class AppStrings {
   static const String passwordsDoNotMatch = "Passwords do not match";
   static const String pleaseFillAllFieldsCorrectly =
       "Please fill all fields correctly.";
-
   // --- Home Screen ---
   static const String home = "Home";
   static const String deliverTo = "Deliver to";
   static const String selectYourLocation = "Select Your Location";
   static const String search = "Search";
-
   static const String more = "More";
   static const String iceCreamDay = "ICE CREAM DAY";
   static const String getYourSweetIceCream = "GET YOUR SWEET\nICE CREAM";
@@ -70,7 +65,6 @@ abstract class AppStrings {
   static const String couplesDeal = "COUPLES DEAL";
   static const String doubleHappiness = "Double\nhappiness.";
   static const String happyValentinesDay = "Happy Valentine's Day";
-
   // Special Offers
   static const String specialOffers = "Special Offers";
   static const String viewAll = "View All";
@@ -81,15 +75,12 @@ abstract class AppStrings {
   static const String notFound = "Not Found";
   static const String trySearchingDifferentKeywords =
       "Try searching with different keywords or adjusting your filters.";
-
   static const String categories = "Categories";
-
   //button
   static const String orders = "Orders";
   static const String liked = "Liked";
   static const String notify = "Notify";
   static const String profile = "Profile";
-
   static const String active = "Active";
   static const String completed = "Completed";
   static const String cancelled = "Cancelled";
@@ -170,18 +161,13 @@ abstract class AppStrings {
   static const String logout = "Logout";
   static const String logoutConfirmation = "Logout Confirmation";
   static const String areYouSureLogout = "Are you sure you want to log out?";
-
   static const String myLocations = "My Locations";
   static const String myPromotions = "My Promotions";
   static const String paymentMethods = "Payment Methods";
-
   static const String automaticallyUpdated = "Automatically Updated";
-
   static const String termOfService = "Term of Service";
   static const String aboutApp = "About App";
-
   static const String yes = "Yes";
-
   static const String pushNotification = "Push notification";
   static const String yourProfile = "Your Profile";
   static const String phoneNumber = "Phone Number";
@@ -211,19 +197,12 @@ abstract class AppStrings {
   static const String help = "Help";
   static const String notFoundHelpTopics = "No help topics found matching your search.";
   static const String noHelpTopics = "No help topics available at the moment.";
-
   static const String appNameFull = "SPEEDY CHOW";
-
   static const String websiteUrl = "www.speedychow.com";
-
   static const String copyrightText = "Copyright © 2024 David (Vuong Huu Thien).\nAll rights reserved.";
-
-
   static const String cash = "Cash";
   static const String paypal = "PayPal";
   static const String apply = "Apply";
-
-
   static const String cardHolderName = "Cardholder Name";
   static const String validThru = "Valid Thru";
   static const String cvvCvc = "CVV / CVC";
@@ -241,7 +220,6 @@ abstract class AppStrings {
   static const String validateCardHolderName = 'Enter cardholder name';
   static const String validateExpiryDate = 'Enter MM/YY';
   static const String validateCvv = 'Enter CVV';
-
   static const String promotionInformation = "Promotion Information";
   static const String freeShipping = "FREE SHIPPING";
   static const String description = "Description";
@@ -251,9 +229,7 @@ abstract class AppStrings {
   static const String discountAmount = "Discount Amount";
   static const String termsAndConditions = "Terms and Conditions";
   static const String passwordChangedSuccessLogin = "Your password has been changed successfully. You will be redirected to the Login page in a few seconds.";
-
   static const String addNewAddress = "Add New Address";
-
   static const String noLocationsAdded = "No locations added";
   static const String orderSummary = "Order Summary";
   static const String paymentMethod = "Payment method";
@@ -284,21 +260,14 @@ abstract class AppStrings {
   static const String yourOrderCanceled = "Your Order Canceled";
   static const String orderCancellationInfo = "We're sorry to see your order go. 😔\nWe're always striving to improve, and we hope to serve you better next time!";
   static const String ok = "Ok";
-
-
-
   static const String notAvailable = "N/A";
   static const String addressNotProvided = "Address not provided";
-
   static const String noPromotionsApplied = "No Promotions Applied";
   static const String trackOrderTitle = "Order Tracking";
   static const String estimatedDeliveryTime = "Estimated Delivery Time";
   static const String myOrder = "My Order";
   static const String details = "Details";
-
   static const String orderCompletedStatus = "Order Completed";
-
-
   static const String createAccount = "Create Account";
   static const String orSignUpWith = "or Sign up with";
   }
