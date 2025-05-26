@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/features/auth/presentation/pages/onboarding/splash_screen.dart';
+import 'package:logger/logger.dart';
 import '../../features/auth/presentation/pages/forgot_password/create_new_password.dart';
 import '../../features/auth/presentation/pages/forgot_password/forgot_password.dart';
 import '../../features/auth/presentation/pages/lets_in.dart';
@@ -37,7 +38,6 @@ import 'route_names.dart';
 
 class AppRoute{
   BuildContext context;
-
   AppRoute({required this.context});
 
   Route onGenerateRoute(RouteSettings routeSettings) {
@@ -56,7 +56,7 @@ class AppRoute{
         return MaterialPageRoute(builder: (context) => LoginScreen());
       case RouteNames.verificationScreen:
         final aa = routeSettings.arguments as Map;
-        return MaterialPageRoute(builder: (context) => VerificationScreen(purpose: aa["purpose"], verificationTarget: aa["VerificationTarget"], verificationTargetEmail: '',));
+        return MaterialPageRoute(builder: (context) => VerificationScreen(data: aa));
       case RouteNames.createNewPasswordScreen:
         return MaterialPageRoute(builder: (context) => CreateNewPasswordScreen());
       case RouteNames.forgotPasswordScreen:
@@ -115,15 +115,11 @@ class AppRoute{
         return MaterialPageRoute(builder: (context) => MyBasketScreen());
 
       default:
-        return _errorRoute();
+        return MaterialPageRoute(
+          builder: (_) => const Scaffold(
+            body: Center(child: Text('Route not found')),
+          ),
+        );
     }
   }
-    Route<dynamic> _errorRoute() {
-      return MaterialPageRoute(builder: (context) =>
-          Scaffold(
-            appBar: AppBar(title: const Text("Error"),),
-            body: const Center(child: Text("404 not found"),),
-          ),);
-    }
-  
 }

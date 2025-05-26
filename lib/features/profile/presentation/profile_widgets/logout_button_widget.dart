@@ -1,4 +1,3 @@
-// file: features/profile/presentation/widgets/logout_button_widget.dart
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';

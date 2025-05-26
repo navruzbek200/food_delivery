@@ -19,10 +19,8 @@ class LetsInScreen extends StatelessWidget {
     Widget targetScreen;
     if (isSignUp) {
       targetScreen = const SignUpScreen();
-      print("Navigating from Let's In to Sign Up Screen...");
     } else {
       targetScreen = const LoginScreen();
-      print("Navigating from Let's In to Login Screen...");
     }
 
     Navigator.of(
@@ -30,17 +28,11 @@ class LetsInScreen extends StatelessWidget {
     ).pushReplacement(MaterialPageRoute(builder: (ctx) => targetScreen));
   }
 
-  void _onContinueWithFacebook(BuildContext context) {
-    print("Continue with Facebook pressed");
-  }
+  void _onContinueWithFacebook(BuildContext context) {}
 
-  void _onContinueWithGoogle(BuildContext context) {
-    print("Continue with Google pressed");
-  }
+  void _onContinueWithGoogle(BuildContext context) {}
 
-  void _onContinueWithApple(BuildContext context) {
-    print("Continue with Apple pressed");
-  }
+  void _onContinueWithApple(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {

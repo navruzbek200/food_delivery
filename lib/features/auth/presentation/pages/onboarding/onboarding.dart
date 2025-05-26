@@ -73,7 +73,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const LetsInScreen()),
     );
-    print("Navigating to Let's In Screen...");
   }
 
   void _onNextPressed() {

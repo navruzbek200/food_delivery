@@ -1,0 +1,3 @@
+class LogoutEntity {
+  const LogoutEntity();
+}

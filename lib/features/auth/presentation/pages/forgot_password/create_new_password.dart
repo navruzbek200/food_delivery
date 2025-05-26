@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';
+import 'package:food_delivery/features/auth/presentation/bloc/resetPassword/reset_password_bloc.dart';
+import 'package:food_delivery/features/auth/presentation/bloc/resetPassword/reset_password_state.dart';
 import '../../../../../core/common/text_styles/name_textstyles.dart';
+import '../../bloc/auth_event.dart';
 import '../login/login.dart';
 
 class CreateNewPasswordScreen extends StatefulWidget {
@@ -15,10 +19,13 @@ class CreateNewPasswordScreen extends StatefulWidget {
 
 class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _textStyles = RobotoTextStyles();
 
+
+  bool _isResetPasswordEnabled = false;
   bool _obscureNewPassword = true;
   bool _obscureConfirmPassword = true;
   bool _rememberMe = false;
@@ -48,9 +55,9 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
     if (mounted) {
       final newState =
           _newPasswordController.text.isNotEmpty &&
-          _confirmPasswordController.text.isNotEmpty &&
-          (_newPasswordController.text == _confirmPasswordController.text) &&
-          _newPasswordController.text.length >= 6;
+              _confirmPasswordController.text.isNotEmpty &&
+              (_newPasswordController.text == _confirmPasswordController.text) &&
+              _newPasswordController.text.length >= 6;
       if (_isContinueEnabled != newState) {
         setState(() {
           _isContinueEnabled = newState;
@@ -127,7 +134,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                       MaterialPageRoute(
                         builder: (context) => const LoginScreen(),
                       ),
-                      (Route<dynamic> route) => false,
+                          (Route<dynamic> route) => false,
                     );
                   },
                   child: Text(
@@ -144,6 +151,22 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
         );
       },
     );
+  }
+
+  void _updateResetPasswordButtonState() {
+    if (mounted) {
+      final isValidEmail = RegExp(r'\S+@\S+\.\S+').hasMatch(_emailController.text);
+      final isValidPassword = _newPasswordController.text.length >= 6;
+      final newState = _emailController.text.isNotEmpty &&
+          _newPasswordController.text.isNotEmpty &&
+          isValidEmail &&
+          isValidPassword;
+      if (_isResetPasswordEnabled != newState) {
+        setState(() {
+          _isResetPasswordEnabled = newState;
+        });
+      }
+    }
   }
 
   void _handleCreateNewPassword() {
@@ -243,7 +266,6 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: AppResponsive.height(30)),
                 SizedBox(
@@ -280,6 +302,38 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                     fontSize: 16,
                   ),
                 ),
+                SizedBox(height: AppResponsive.height(24)),
+
+                TextFormField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    hintText: AppStrings.email,
+                    prefixIcon: Icon(Icons.email_outlined, color: AppColors.neutral400),
+                    hintStyle: _textStyles.regular(color: AppColors.neutral400, fontSize: 14),
+                    filled: true,
+                    fillColor: AppColors.neutral100.withOpacity(0.5),
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: AppResponsive.height(16),
+                      horizontal: AppResponsive.width(16),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppResponsive.height(12)),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return AppStrings.pleaseEnterEmail;
+                    }
+                    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
+                  textInputAction: TextInputAction.next,
+                ),
+
                 SizedBox(height: AppResponsive.height(24)),
                 TextFormField(
                   controller: _newPasswordController,
@@ -320,9 +374,9 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted:
                       (_) =>
-                          _isContinueEnabled
-                              ? _handleCreateNewPassword()
-                              : null,
+                  _isContinueEnabled
+                      ? _handleCreateNewPassword()
+                      : null,
                 ),
                 SizedBox(height: AppResponsive.height(20)),
                 InkWell(
@@ -347,12 +401,12 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                           },
                           activeColor: AppColors.primary500,
                           materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
+                          MaterialTapTargetSize.shrinkWrap,
                           side: BorderSide(
                             color:
-                                _rememberMe
-                                    ? AppColors.primary500
-                                    : AppColors.neutral300,
+                            _rememberMe
+                                ? AppColors.primary500
+                                : AppColors.neutral300,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
@@ -373,32 +427,68 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                   ),
                 ),
                 SizedBox(height: AppResponsive.height(30)),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        _isContinueEnabled
-                            ? AppColors.primary500
-                            : AppColors.primary200,
-                    padding: EdgeInsets.symmetric(
-                      vertical: AppResponsive.height(16),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        AppResponsive.height(28),
-                      ),
-                    ),
-                    elevation: _isContinueEnabled ? 2 : 0,
-                  ),
-                  onPressed:
-                      _isContinueEnabled ? _handleCreateNewPassword : null,
-                  child: Text(
-                    AppStrings.continueText,
-                    style: _textStyles.semiBold(
-                      color: AppColors.white,
-                      fontSize: 16,
-                    ),
-                  ),
+
+                BlocConsumer<ResetPasswordBloc, ResetPasswordState>(
+                    builder: (context, state) {
+                      if(state is ResetPasswordLoading){
+                        return CircularProgressIndicator();
+                      }
+                      return ElevatedButton(
+                        onPressed: () {
+                          if (_newPasswordController.text == _confirmPasswordController.text) {
+                            context.read<ResetPasswordBloc>().add(
+                                ResetPasswordEvent(
+                                  email: _emailController.text,
+                                  password: _newPasswordController.text,
+                                )
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(AppStrings.passwordsDoNotMatch),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(double.infinity,50),
+                          backgroundColor:
+                          _isContinueEnabled
+                              ? AppColors.primary500
+                              : AppColors.primary200,
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppResponsive.height(16),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              AppResponsive.height(28),
+                            ),
+                          ),
+                          elevation: _isContinueEnabled ? 2 : 0,
+                        ),
+                        child: Text(
+                          AppStrings.continueText,
+                          style: _textStyles.semiBold(
+                            color: AppColors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      );
+                    },
+                    listener: (context, state) {
+                      if(state is ResetPasswordLoaded){
+                        _showCongratulationsDialog();
+                      }
+                      if(state is ResetPasswordError){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Error is occured")),
+                        );
+                      }
+                    },
                 ),
+
                 SizedBox(height: AppResponsive.height(30)),
               ],
             ),

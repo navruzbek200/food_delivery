@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 import 'package:food_delivery/core/common/constants/strings/app_string.dart';
+import 'package:logger/logger.dart';
 import '../../../../../core/common/text_styles/name_textstyles.dart';
+import '../../bloc/auth_event.dart';
+import '../../bloc/forgotPassword/forgot_password_bloc.dart';
+import '../../bloc/forgotPassword/forgot_password_state.dart';
 import '../otp_verification/verificationScreen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -35,7 +40,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     if (mounted) {
       final newState =
           _emailController.text.isNotEmpty &&
-          RegExp(r'\S+@\S+\.\S+').hasMatch(_emailController.text);
+              RegExp(r'\S+@\S+\.\S+').hasMatch(_emailController.text);
       if (_isButtonEnabled != newState) {
         setState(() {
           _isButtonEnabled = newState;
@@ -44,22 +49,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     }
   }
 
-  // In _ForgotPasswordScreenState class
   void _handleSendCode() {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState?.validate() ?? false) {
       final email = _emailController.text;
       print('Sending password reset code to: $email');
-      // TODO: Implement API call
 
       Navigator.push(
         context,
         MaterialPageRoute(
           builder:
-              (context) => VerificationScreen(
-                verificationTarget: email,
-                purpose: OtpVerificationPurpose.forgotPassword, verificationTargetEmail: '',
-              ),
+              (context) => VerificationScreen(data: {"verificationTarget":email,"purpose":OtpVerificationPurpose.forgotPassword,"verificationTargetEmail":''}),
         ),
       );
     } else {
@@ -137,7 +137,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: AppResponsive.height(40)),
                 Text(
@@ -170,31 +169,58 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       (_) => _isButtonEnabled ? _handleSendCode() : null,
                 ),
                 SizedBox(height: AppResponsive.height(40)),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
+
+                BlocConsumer<ForgotPasswordBloc, ForgotPasswordState>(
+                  builder: (context, state) {
+                    if(state is ForgotPasswordLoading){
+                      return CircularProgressIndicator();
+                    }
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity,50),
+                        backgroundColor:
                         _isButtonEnabled
                             ? AppColors.primary500
                             : AppColors.primary200,
-                    padding: EdgeInsets.symmetric(
-                      vertical: AppResponsive.height(16),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        AppResponsive.height(28),
+                        padding: EdgeInsets.symmetric(
+                          vertical: AppResponsive.height(16),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            AppResponsive.height(28),
+                          ),
+                        ),
+                        elevation: _isButtonEnabled ? 2 : 0,
                       ),
-                    ),
-                    elevation: _isButtonEnabled ? 2 : 0,
-                  ),
-                  onPressed: _isButtonEnabled ? _handleSendCode : null,
-                  child: Text(
-                    AppStrings.resendCode,
-                    style: _textStyles.semiBold(
-                      color: AppColors.white,
-                      fontSize: 16,
-                    ),
-                  ),
+                      onPressed: () {
+                        context.read<ForgotPasswordBloc>().add(
+                          ForgotPasswordEvent(email: _emailController.text.trim()),
+                        );
+                      },
+                      child: Text(
+                        AppStrings.resendCode,
+                        style: _textStyles.semiBold(
+                          color: AppColors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    );
+                  },
+                  listener: (context, state) {
+                    if(state is ForgotPasswordLoaded){
+                      Navigator.pushReplacementNamed(context,'/verificationScreen', arguments: {
+                        'purpose': OtpVerificationPurpose.forgotPassword,
+                        'verificationTarget': 'sharobidinovasevinch@gmail.com',
+                      },);
+                    }
+                    if(state is ForgotPasswordError){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Error is occured")),
+                      );
+                    }
+                  },
                 ),
+
                 SizedBox(height: AppResponsive.height(30)),
               ],
             ),
