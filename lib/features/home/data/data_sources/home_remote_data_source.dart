@@ -16,9 +16,9 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDataSource{
 
   @override
   Future<CreateOrderEntity> create_order({required int count, required int food_id}) async{
-    logger.w("request| url:${ApiUrl.orders},count: $count,food_id: $food_id");
+    logger.w("request| url:${ApiUrls.orders},count: $count,food_id: $food_id");
     final response = await dio.post(
-        ApiUrl.orders,
+        ApiUrls.orders,
         data: {
           "items":[{
             "count": count,

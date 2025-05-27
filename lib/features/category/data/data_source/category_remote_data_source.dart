@@ -22,7 +22,7 @@ class CategoryRemoteDataSourceImpl implements CategoryRemoteDataSource{
 
   @override
   Future<List<CategoriesEntity>> getCategories()async {
-    final response = await dio.get(ApiUrl.categories);
+    final response = await dio.get(ApiUrls.categories);
     if(response.statusCode == 200 || response.statusCode == 201){
       logger.i("GET CATEGORIES | response: $response");
       return categoriesFromJson(response.data);
@@ -34,7 +34,7 @@ class CategoryRemoteDataSourceImpl implements CategoryRemoteDataSource{
 
   @override
   Future<SingleCategoryEntity> getSingleCategory({required int id}) async {
-    final response = await dio.get("${ApiUrl.categoriesId}$id");
+    final response = await dio.get("${ApiUrls.categoriesId}$id");
     if(response.statusCode == 200 || response.statusCode == 201){
       logger.i("GET SINGLE CATEGORIES | response: $response");
       return SingleCategoryModel.fromJson(response.data);
@@ -45,7 +45,7 @@ class CategoryRemoteDataSourceImpl implements CategoryRemoteDataSource{
 
   @override
   Future<List<CategoryFoodsEntity>> getFoodsCategory({required int id}) async {
-    final response = await dio.get("${ApiUrl.categoriesIdFoods}$id/foods");
+    final response = await dio.get("${ApiUrls.categoriesIdFoods}$id/foods");
     if(response.statusCode == 200 || response.statusCode == 201){
       logger.i("GET FOOD CATEGORIES | response: $response");
       return getfoodcategoriesFromJson(response.data);
