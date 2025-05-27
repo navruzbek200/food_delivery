@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/features/auth/presentation/pages/onboarding/splash_screen.dart';
-import 'package:logger/logger.dart';
 import '../../features/auth/presentation/pages/forgot_password/create_new_password.dart';
 import '../../features/auth/presentation/pages/forgot_password/forgot_password.dart';
 import '../../features/auth/presentation/pages/lets_in.dart';
