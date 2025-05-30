@@ -1,36 +1,47 @@
 import 'package:food_delivery/features/orders/data/data_sources/orders_remote_datasource.dart';
-import 'package:food_delivery/features/home/domain/entities/create_order_entity.dart';
 import 'package:food_delivery/features/orders/domain/entities/orders_entity.dart';
 import 'package:food_delivery/features/orders/domain/entities/update_order_entity.dart';
+import '../../../../core/utils/token_storage.dart';
 import '../../domain/repositories/orders_repository.dart';
 
 class OrdersRepositoryImpl implements OrdersRepository {
   final OrdersRemoteDatasource ordersRemoteDatasource;
+
   OrdersRepositoryImpl({required this.ordersRemoteDatasource});
 
   @override
-  Future<OrderEntity> get_all_orders() {
-    return ordersRemoteDatasource.get_all_orders();
+  Future<List<OrderEntity>> getAllOrders({required String status}) async {
+    final token = await TokenStorage().getToken();
+    if (token == null) {
+      throw Exception('Token topilmadi');
+    }
+    return ordersRemoteDatasource.getAllOrders(status: status, token: token);
   }
 
   @override
-  Future<OrderEntity> get_active_orders() {
-    return ordersRemoteDatasource.get_active_orders();
+  Future<List<OrderEntity>> getActiveOrders({required String status}) async{
+    final token = await TokenStorage().getToken();
+    if (token == null) {
+      throw Exception('Token topilmadi');
+    }
+    return ordersRemoteDatasource.getActiveOrders(status: status, token: token);
   }
 
   @override
-  Future<OrderEntity> get_completed_orders() {
-    return ordersRemoteDatasource.get_completed_orders();
+  Future<List<OrderEntity>> getCompletedOrders({required String status}) async{
+    final token = await TokenStorage().getToken();
+    if (token == null) {
+      throw Exception('Token topilmadi');
+    }
+    return ordersRemoteDatasource.getCompletedOrders(status: status, token: token);
   }
 
   @override
-  Future<UpdateOrderEntity> updare_order({required int id}) {
-    return ordersRemoteDatasource.update_order(id: id);
+  Future<UpdateOrderEntity> updateOrder({required int order_id}) async{
+    final token = await TokenStorage().getToken();
+    if (token == null) {
+      throw Exception('Token topilmadi');
+    }
+    return ordersRemoteDatasource.updateOrder(order_id: order_id, token: token);
   }
-
-  // @override
-  // Future<CreateOrderEntity> create_order({required int count, required int food_id}) {
-  //   return ordersRemoteDatasource.create_order(count: count, food_id: food_id);
-  // }
-
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/features/auth/presentation/pages/onboarding/splash_screen.dart';
-import 'package:logger/logger.dart';
 import '../../features/auth/presentation/pages/forgot_password/create_new_password.dart';
 import '../../features/auth/presentation/pages/forgot_password/forgot_password.dart';
 import '../../features/auth/presentation/pages/lets_in.dart';
@@ -10,7 +9,7 @@ import '../../features/auth/presentation/pages/onboarding/welcome.dart';
 import '../../features/auth/presentation/pages/otp_verification/verificationScreen.dart';
 import '../../features/auth/presentation/pages/signup/sign_up.dart';
 import '../../features/help_center/presentation/pages/help_center_screen.dart';
-import '../../features/home/presentation/pages/categories.dart';
+import '../../features/home/presentation/widgets/home_widgets/categories.dart';
 import '../../features/home/presentation/pages/food_detail.dart';
 import '../../features/home/presentation/pages/home_screen.dart';
 import '../../features/home/presentation/pages/my_basket_screen.dart';

@@ -7,6 +7,6 @@ class CreateOrderUseCase{
   CreateOrderUseCase({required this.homeRepository});
 
   Future<CreateOrderEntity> call ({required int count,required int food_id}){
-    return homeRepository.create_order(count: count, food_id: food_id);
+    return homeRepository.createOrder(count: count, food_id: food_id);
   }
 }

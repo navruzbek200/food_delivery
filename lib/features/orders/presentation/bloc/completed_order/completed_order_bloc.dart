@@ -13,7 +13,7 @@ class CompletedOrderBloc extends Bloc<OrderEvent, CompletedOrderState>{
     on<CompletedOrderEvent>((event,emit)async{
       emit(CompletedOrderLoading());
       try{
-        final order = await completedOrdersUseCase.call();
+        final order = await completedOrdersUseCase.call(status: '');
         emit(CompletedOrderLoaded(orderEntity: order));
       }catch(e,s){
         logger.e("COMPLETED ORDER BLOCK: $s");

@@ -53,6 +53,7 @@ class SearchBarInternalWidget extends StatelessWidget {
                 contentPadding: EdgeInsets.symmetric(vertical: AppResponsive.height(15)),
                 suffixIcon: controller.text.isNotEmpty
                     ? IconButton(
+                  key: const ValueKey('clear_button'),
                   icon: Icon(Icons.clear, color: AppColors.neutral500, size: AppResponsive.height(20)),
                   onPressed: onClear,
                   padding: EdgeInsets.zero,
@@ -67,6 +68,7 @@ class SearchBarInternalWidget extends StatelessWidget {
           ),
           SizedBox(width: AppResponsive.width(12)),
           InkWell(
+            key: const ValueKey('filter_button'),
             onTap: onFilterTapped,
             child: Icon(Icons.tune_outlined, color: AppColors.primary500, size: AppResponsive.height(22)),
           ),

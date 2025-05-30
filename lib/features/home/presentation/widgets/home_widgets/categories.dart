@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 
-import '../../../../core/common/constants/colors/app_colors.dart';
-import '../../../../core/common/constants/strings/app_string.dart';
-import '../../../../core/common/text_styles/name_textstyles.dart';
-import '../../../category/presentation/pages/category_items_screen.dart';
+import '../../../../../core/common/constants/colors/app_colors.dart';
+import '../../../../../core/common/constants/strings/app_string.dart';
+import '../../../../../core/common/text_styles/name_textstyles.dart';
+import '../../../../category/presentation/pages/category_items_screen.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
@@ -69,12 +69,15 @@ class CategoriesScreen extends StatelessWidget {
           final String categoryIconPath = category['imagePath'] ?? "assets/images/placeholder.png";
           bool isSvg = categoryIconPath.toLowerCase().endsWith('.svg');
 
+
+
           return GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => CategoryItemsScreen(
+                    category_id: index + 1,
                     categoryName: categoryName,
                     categoryIconPath: categoryIconPath,
                   ),
@@ -112,3 +115,11 @@ class CategoriesScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+

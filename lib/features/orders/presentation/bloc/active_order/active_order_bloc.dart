@@ -13,7 +13,7 @@ class ActiveOrderBloc extends Bloc<OrderEvent, ActiveOrderState>{
     on<ActiveOrderEvent>((event,emit)async{
       emit(ActiveOrderLoading());
       try{
-        final order = await activeOrdersUseCase.call();
+        final order = await activeOrdersUseCase.call(status: '');
         emit(ActiveOrderLoaded(orderEntity: order));
       }catch(e,s){
         logger.e("ACTIVE ORDER BLOCK: $s");

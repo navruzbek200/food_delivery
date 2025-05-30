@@ -41,6 +41,44 @@ class DioClient {
     }
   }
 
+
+  Future<Response<dynamic>> get(
+      String url, {
+        Map<String, dynamic>? queryParameters,
+        Options? options,
+        CancelToken? cancelToken,
+        ProgressCallback? onReceiveProgress,
+      }) async {
+    try {
+      logger.i("GET Request to $url");
+      logger.i("Query Parameters: $queryParameters");
+
+      final response = await _dio.get(
+        url,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+      );
+
+      logger.i("Response from $url: ${response.data}");
+      return response;
+    } on DioException catch (e) {
+      logger.e("‼️ GET Error to $url", error: e, stackTrace: e.stackTrace);
+      logger.e("Error Details:", error: {
+        'url': e.requestOptions.uri.toString(),
+        'method': e.requestOptions.method,
+        'headers': e.requestOptions.headers,
+        'data': e.requestOptions.data,
+        'response': e.response?.data,
+        'statusCode': e.response?.statusCode,
+      });
+      rethrow;
+    }
+  }
+
+
+
   Future<Response<dynamic>> post(
       String url, {
         Object? data,

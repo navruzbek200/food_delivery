@@ -6,7 +6,7 @@ class UpdateOrdersUsecase{
 
   UpdateOrdersUsecase({required this.ordersRepository});
 
-  Future<UpdateOrderEntity> call ({required int id}){
-    return ordersRepository.updare_order(id: id);
+  Future<UpdateOrderEntity> call ({required int order_id}){
+    return ordersRepository.updateOrder(order_id: order_id);
   }
 }

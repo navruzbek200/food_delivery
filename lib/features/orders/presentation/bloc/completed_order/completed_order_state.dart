@@ -7,7 +7,7 @@ class CompletedOrderInitial extends CompletedOrderState{}
 class CompletedOrderLoading extends CompletedOrderState{}
 
 class CompletedOrderLoaded extends CompletedOrderState{
-  final OrderEntity orderEntity;
+  final List<OrderEntity> orderEntity;
   CompletedOrderLoaded({required this.orderEntity});
 }
 

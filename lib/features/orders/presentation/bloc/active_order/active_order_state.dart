@@ -7,7 +7,7 @@ class ActiveOrderInitial extends ActiveOrderState{}
 class ActiveOrderLoading extends ActiveOrderState{}
 
 class ActiveOrderLoaded extends ActiveOrderState{
-  final OrderEntity orderEntity;
+  final List<OrderEntity> orderEntity;
   ActiveOrderLoaded({required this.orderEntity});
 }
 

@@ -6,7 +6,7 @@ class ActiveOrdersUseCase{
 
   ActiveOrdersUseCase({required this.ordersRepository});
 
-  Future<OrderEntity> call(){
-    return ordersRepository.get_active_orders();
+  Future<List<OrderEntity>> call({required String status}){
+    return ordersRepository.getActiveOrders(status: status);
   }
 }

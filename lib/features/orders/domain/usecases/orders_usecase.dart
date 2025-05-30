@@ -3,8 +3,10 @@ import '../entities/orders_entity.dart';
 
 class OrdersUsecase {
   final OrdersRepository ordersRepository;
+
   OrdersUsecase({required this.ordersRepository});
-  Future<OrderEntity>call(){
-    return ordersRepository.get_all_orders();
+
+  Future<List<OrderEntity>> call({required String status}) {
+    return ordersRepository.getAllOrders(status: status);
   }
 }

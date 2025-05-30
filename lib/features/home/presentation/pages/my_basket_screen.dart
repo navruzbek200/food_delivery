@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/common/constants/colors/app_colors.dart';
 import 'package:food_delivery/core/common/text_styles/name_textstyles.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
+import 'package:food_delivery/features/home/presentation/bloc/create_order/create_order_bloc.dart';
+import 'package:food_delivery/features/home/presentation/bloc/home_event.dart';
 import 'package:food_delivery/features/orders/presentation/pages/orders_screen.dart';
 import 'dart:math';
 
@@ -174,6 +177,9 @@ class _MyBasketScreenState extends State<MyBasketScreen> {
       );
       return;
     }
+
+      context.read<CreateOrderBloc>().add(CreateOrderEvent(count: 3, food_id: 2));
+
     Navigator.push(context, MaterialPageRoute(
       builder: (context) => const OrdersScreen(),
     ));
@@ -571,7 +577,7 @@ class _MyBasketScreenState extends State<MyBasketScreen> {
     return _buildSectionCard(
       icon: Icons.local_offer_outlined,
       title: 'Promotions',
-      onTap: _navigateToPromotions, 
+      onTap: _navigateToPromotions,
       child: _appliedPromotions.isEmpty
           ? Text('No promotions applied', style: _textStyles.regular(color: AppColors.neutral600, fontSize: 14))
           : Wrap(

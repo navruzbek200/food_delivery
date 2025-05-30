@@ -1,21 +1,28 @@
 abstract class OrderEvent {
-  OrderEvent();
+  const OrderEvent();
 
 }
 
 class AllOrderEvent extends OrderEvent{
-  AllOrderEvent();
+  final String status;
+
+  AllOrderEvent({required this.status});
 }
 
 class ActiveOrderEvent extends OrderEvent{
-  ActiveOrderEvent();
+  final String status;
+
+  ActiveOrderEvent({required this.status});
 }
 
 class CompletedOrderEvent extends OrderEvent{
-  CompletedOrderEvent();
+  final String status;
+
+  CompletedOrderEvent({required this.status});
 }
 
 class UpdateOrderEvent extends OrderEvent{
-  final int id;
-  UpdateOrderEvent({required this.id});
+  final int order_id;
+
+  UpdateOrderEvent({required this.order_id});
 }

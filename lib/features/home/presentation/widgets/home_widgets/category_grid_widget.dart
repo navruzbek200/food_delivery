@@ -51,6 +51,7 @@ class CategoryGridWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => CategoryItemsScreen(
+                    category_id: index + 1,
                     categoryName: categoryName,
                     categoryIconPath: categoryIconPath,
                   ),

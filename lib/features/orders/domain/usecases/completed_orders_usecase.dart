@@ -6,7 +6,7 @@ class CompletedOrdersUseCase{
 
   CompletedOrdersUseCase({required this.ordersRepository});
 
-  Future<OrderEntity> call(){
-    return ordersRepository.get_completed_orders();
+  Future<List<OrderEntity>> call({required String status}){
+    return ordersRepository.getCompletedOrders(status: status);
   }
 }

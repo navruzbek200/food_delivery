@@ -15,14 +15,14 @@ class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUpScreen> createState() => SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _textStyles = RobotoTextStyles();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final textStyles = RobotoTextStyles();
 
   FocusNode focusNode1 = FocusNode();
   FocusNode focusNode2 = FocusNode();
@@ -35,7 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _text_field_2_color = false;
 
   bool _obscurePassword = true;
-  bool _isRegisterEnabled = false;
+  bool isRegisterEnabled = false;
 
   @override
   void initState() {
@@ -50,33 +50,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _text_field_2_color = focusNode2.hasFocus;
       });
     });
-    _emailController.addListener(_updateRegisterButtonState);
-    _passwordController.addListener(_updateRegisterButtonState);
+    emailController.addListener(updateRegisterButtonState);
+    passwordController.addListener(updateRegisterButtonState);
   }
 
   @override
   void dispose() {
-    _emailController.removeListener(_updateRegisterButtonState);
-    _passwordController.removeListener(_updateRegisterButtonState);
-    _emailController.dispose();
-    _passwordController.dispose();
+    emailController.removeListener(updateRegisterButtonState);
+    passwordController.removeListener(updateRegisterButtonState);
+    emailController.dispose();
+    passwordController.dispose();
     focusNode1.dispose();
     focusNode2.dispose();
     focusNode3.dispose();
     super.dispose();
   }
 
-  void _updateRegisterButtonState() {
+  void updateRegisterButtonState() {
     if (mounted) {
-      final isValidEmail = RegExp(r'\S+@\S+\.\S+').hasMatch(_emailController.text);
-      final isValidPassword = _passwordController.text.length >= 6;
-      final newState = _emailController.text.isNotEmpty &&
-          _passwordController.text.isNotEmpty &&
+      final isValidEmail = RegExp(r'\S+@\S+\.\S+').hasMatch(emailController.text);
+      final isValidPassword = passwordController.text.length >= 6;
+      final newState = emailController.text.isNotEmpty &&
+          passwordController.text.isNotEmpty &&
           isValidEmail &&
           isValidPassword;
-      if (_isRegisterEnabled != newState) {
+      if (isRegisterEnabled != newState) {
         setState(() {
-          _isRegisterEnabled = newState;
+          isRegisterEnabled = newState;
         });
       }
     }
@@ -93,9 +93,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => VerificationScreen(data: {
-            "verificationTargetEmail": _emailController.text,
+            "verificationTargetEmail": emailController.text,
             "purpose": OtpVerificationPurpose.signUp,
-            "verificationTarget": _emailController.text,
+            "verificationTarget": emailController.text,
           }),
         ),
       );
@@ -123,8 +123,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void signUp(){
     context.read<RegisterBloc>().add(RegisterEvent(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim()));
+      email: emailController.text.trim(),
+      password: passwordController.text.trim()));
       focusNode3.addListener(() => setState(() {}));
 
   }
@@ -153,14 +153,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: AppResponsive.height(10)),
                   Text(
                     AppStrings.createAccount,
-                    style: _textStyles.bold(
+                    style: textStyles.bold(
                       color: AppColors.primary500,
                       fontSize: 30,
                     ),
                   ),
                   SizedBox(height: AppResponsive.height(40)),
                   TextFormField(
-                    controller: _emailController,
+                    controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: _inputDecoration(hintText: AppStrings.email, prefixIcon: Icons.email_outlined,),
                     validator: (value) {
@@ -172,7 +172,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   SizedBox(height: AppResponsive.height(20)),
                   TextFormField(
-                    controller: _passwordController,
+                    controller: passwordController,
                     obscureText: _obscurePassword,
                     decoration: _inputDecoration(
                       hintText: AppStrings.password,
@@ -188,7 +188,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       return null;
                     },
                     textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (_) => _isRegisterEnabled ? _handleRegister() : null,
+                    onFieldSubmitted: (_) => isRegisterEnabled ? _handleRegister() : null,
                   ),
                   SizedBox(height: AppResponsive.height(20)),
                   InkWell(
@@ -207,7 +207,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                         SizedBox(width: AppResponsive.width(12)),
-                        Text(AppStrings.rememberMe, style: _textStyles.medium(color: AppColors.textPrimary, fontSize: 14),),
+                        Text(AppStrings.rememberMe, style: textStyles.medium(color: AppColors.textPrimary, fontSize: 14),),
                       ],
                     ),
                   ),
@@ -218,9 +218,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         if(state is RegisterLoaded){
                             Navigator.pushReplacementNamed(context,'/verificationScreen', arguments: {
                               'purpose': OtpVerificationPurpose.signUp,
-                              'verificationTarget': _emailController.text.trim(),
-                              'email':_emailController.text.trim(),
-                              'password': _passwordController.text.trim(),
+                              'verificationTarget': emailController.text.trim(),
+                              'email':emailController.text.trim(),
+                              'password': passwordController.text.trim(),
                             },);
                         }
                         if(state is RegisterError){
@@ -245,11 +245,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 signUp();
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: _isRegisterEnabled ? AppColors.primary500 : AppColors.primary200,
+                                backgroundColor: isRegisterEnabled ? AppColors.primary500 : AppColors.primary200,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppResponsive.height(28)),),
-                                elevation: _isRegisterEnabled ? 2 : 0,
+                                elevation: isRegisterEnabled ? 2 : 0,
                               ),
-                              child: Text(AppStrings.register, style: _textStyles.semiBold(color: AppColors.white, fontSize: 16),),
+                              child: Text(AppStrings.register, style: textStyles.semiBold(color: AppColors.white, fontSize: 16),),
                             ),
                           );
                         }
@@ -263,7 +263,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Row(
                       children: [
                         const Expanded(child: Divider(color: AppColors.neutral200, thickness: 1)),
-                        Padding(padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(16)), child: Text(AppStrings.orSignUpWith, style: _textStyles.regular(color: AppColors.neutral600, fontSize: 14),),),
+                        Padding(padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(16)), child: Text(AppStrings.orSignUpWith, style: textStyles.regular(color: AppColors.neutral600, fontSize: 14),),),
                         const Expanded(child: Divider(color: AppColors.neutral200, thickness: 1)),
                       ],
                     ),
@@ -283,11 +283,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(AppStrings.alreadyHaveAccount, style: _textStyles.regular(color: AppColors.textSecondary, fontSize: 14),),
+                      Text(AppStrings.alreadyHaveAccount, style: textStyles.regular(color: AppColors.textSecondary, fontSize: 14),),
                       TextButton(
                         style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(4)), minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
                         onPressed: _navigateToLogin,
-                        child: Text(AppStrings.signIn, style: _textStyles.semiBold(color: AppColors.primary500, fontSize: 14),),
+                        child: Text(AppStrings.signIn, style: textStyles.semiBold(color: AppColors.primary500, fontSize: 14),),
                       ),
                     ],
                   ),
@@ -304,7 +304,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   InputDecoration _inputDecoration({required String hintText, required IconData prefixIcon, Widget? suffixIcon}) {
     return InputDecoration(
       hintText: hintText,
-      hintStyle: _textStyles.regular(color: AppColors.neutral400, fontSize: 14),
+      hintStyle: textStyles.regular(color: AppColors.neutral400, fontSize: 14),
       prefixIcon: Icon(prefixIcon, color: AppColors.neutral400, size: AppResponsive.height(20)),
       suffixIcon: suffixIcon,
       filled: true,

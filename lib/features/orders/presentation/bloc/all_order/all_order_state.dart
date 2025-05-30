@@ -9,7 +9,7 @@ class AllOrderInital extends AllOrderState{}
 class AllOrderLoading extends AllOrderState{}
 
 class AllOrderLoaded extends AllOrderState{
-  final OrderEntity orderEntity;
+  final List<OrderEntity> orderEntity;
   AllOrderLoaded({required this.orderEntity});
 
 }

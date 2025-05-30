@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
+import 'package:food_delivery/features/orders/presentation/bloc/order_event.dart';
+import 'package:food_delivery/features/orders/presentation/bloc/update_order/update_order_bloc.dart';
 
 import '../../../../core/common/constants/colors/app_colors.dart';
 import '../../../../core/common/constants/strings/app_string.dart';
@@ -81,8 +84,10 @@ class _CancelOrderScreenState extends State<CancelOrderScreen> {
       finalReason = _otherReasonController.text.trim();
     }
 
+
     print("Order ID: ${widget.orderId} cancellation submitted.");
     print("Reason: $finalReason");
+    context.read<UpdateOrderBloc>().add(UpdateOrderEvent(order_id: 2));
 
     _showCancellationSuccessDialog();
   }

@@ -23,6 +23,8 @@ class _LikedScreenState extends State<LikedScreen> {
   final _textStyles = RobotoTextStyles();
   List<Map<String, String>> _displayedLikedItems = [];
   String _searchText = "";
+  bool _isLoading = true;
+
 
   @override
   void initState() {
@@ -40,24 +42,46 @@ class _LikedScreenState extends State<LikedScreen> {
 
   void _loadAndFilterLikedItems({String query = ""}) {
     setState(() {
+      _isLoading = true;
       _searchText = query.toLowerCase();
-      List<Map<String, String>> currentLikedItems =
-          widget.allOffersDataRef
-              .where((offer) => (offer['isLiked']?.toLowerCase() == 'true'))
-              .toList();
 
-      if (_searchText.isEmpty) {
-        _displayedLikedItems = currentLikedItems;
-      } else {
-        _displayedLikedItems =
-            currentLikedItems
-                .where(
-                  (item) =>
-                      (item['name']?.toLowerCase() ?? "").contains(_searchText),
-                )
-                .toList();
-      }
+
+      // if (_searchText.isEmpty) {
+      //   _displayedLikedItems = currentLikedItems;
+      // } else {
+      //   _displayedLikedItems =
+      //       currentLikedItems
+      //           .where(
+      //             (item) =>
+      //                 (item['name']?.toLowerCase() ?? "").contains(_searchText),
+      //           )
+      //           .toList();
+      // }
     });
+    Future.delayed(Duration(seconds: 2),(){
+      List<Map<String, String>> currentLikedItems =
+      widget.allOffersDataRef
+          .where((offer) => (offer['isLiked']?.toLowerCase() == 'true'))
+          .toList();
+
+
+      List<Map<String, String>> filtered = [];
+      if (_searchText.isEmpty) {
+        filtered = currentLikedItems;
+      } else {
+        filtered = currentLikedItems
+            .where(
+              (item) =>
+              (item['name']?.toLowerCase() ?? "").contains(_searchText),
+        )
+            .toList();
+      }
+      setState(() {
+        _displayedLikedItems = filtered;
+        _isLoading = false; // <<< Yakunda loading o‘chadi
+      });
+    });
+
   }
 
   void _handleUnlike(Map<String, String> itemData) {
@@ -146,6 +170,9 @@ class _LikedScreenState extends State<LikedScreen> {
   }
 
   Widget _buildContent() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     if (_displayedLikedItems.isEmpty) {
       return Center(
         child: Text(

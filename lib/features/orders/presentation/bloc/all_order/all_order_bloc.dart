@@ -12,7 +12,7 @@ AllOrderBloc({required this.ordersUsecase}):super(AllOrderInital()){
   on<AllOrderEvent>((event,emit)async{
     emit(AllOrderLoading());
     try{
-      final order = await ordersUsecase.call();
+      final order = await ordersUsecase.call(status: '');
       emit(AllOrderLoaded(orderEntity: order));
     }catch(e,s){
       logger.e("ALL ORDER BLOCK: $s");

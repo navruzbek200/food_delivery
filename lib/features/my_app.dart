@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/core/common/constants/theme/dark_theme.dart';
 import 'package:food_delivery/core/utils/responsiveness/app_responsive.dart';
 import '../core/routes/route_generators.dart';
 import 'auth/presentation/pages/onboarding/splash_screen.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.orange,
             fontFamily: 'Roboto',
           ),
+          // darkTheme: darkMode,
           home: const SplashScreen(),
           onGenerateRoute: AppRoute(context: context).onGenerateRoute,
         );

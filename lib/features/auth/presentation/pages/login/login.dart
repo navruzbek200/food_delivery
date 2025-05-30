@@ -154,11 +154,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   LoginTitle(textStyles: _textStyles),
                   SizedBox(height: AppResponsive.height(40)),
                   EmailTextFormField(
+                    key: Key('emailField'),
                     controller: _emailController,
                     textStyles: _textStyles,
                   ),
                   SizedBox(height: AppResponsive.height(20)),
                   PasswordTextFormField(
+                    key: Key('passwordField'),
                     controller: _passwordController,
                     obscureText: _obscurePassword,
                     onToggleVisibility: _togglePasswordVisibility,
@@ -194,6 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             return CircularProgressIndicator();
                         }
                         return PrimaryElevatedButton(
+                          key: Key('loginButton'),
                           buttonText: AppStrings.signIn,
                           isEnabled: _isSignInEnabled,
                           onPressed: _handleLogin,

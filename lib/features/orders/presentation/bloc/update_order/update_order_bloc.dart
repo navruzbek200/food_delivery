@@ -13,7 +13,7 @@ class UpdateOrderBloc extends Bloc<OrderEvent, UpdateOrderState>{
     on<UpdateOrderEvent>((event,emit)async{
       emit(UpdateOrderLoading());
       try{
-        final order = await updateOrdersUsecase.call(id: event.id);
+        final order = await updateOrdersUsecase.call(order_id: event.order_id);
         emit(UpdateOrderLoaded(updateOrderEntity: order));
       }catch(e,s){
         logger.e("UPDATE ORDER BLOCK: $s");

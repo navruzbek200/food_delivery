@@ -16,6 +16,7 @@ class SpecialOffersPage extends StatefulWidget {
 
 class _SpecialOffersPageState extends State<SpecialOffersPage> {
   final _textStyles = RobotoTextStyles();
+  bool _isLoading = true;
   final TextEditingController _searchController = TextEditingController();
   final List<Map<String, String>> _allSpecialOffers = [
     {
@@ -116,7 +117,19 @@ class _SpecialOffersPageState extends State<SpecialOffersPage> {
     super.initState();
     _filteredOffers = List.from(_allSpecialOffers);
     _searchController.addListener(() {});
+    _loadOffers();
+
   }
+
+  Future<void> _loadOffers() async {
+    await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return;
+    setState(() {
+      _filteredOffers = List.from(_allSpecialOffers);
+      _isLoading = false;
+    });
+  }
+
 
   @override
   void dispose() {
@@ -145,7 +158,6 @@ class _SpecialOffersPageState extends State<SpecialOffersPage> {
 
   @override
   Widget build(BuildContext context) {
-    // AppResponsive.init(context); // Agar global sozlanmagan bo'lsa
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -156,7 +168,7 @@ class _SpecialOffersPageState extends State<SpecialOffersPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          AppStrings.specialOffers, // AppStrings.specialOffers mavjud bo'lishi kerak
+          AppStrings.specialOffers,
           style: _textStyles.semiBold(
             color: AppColors.neutral900,
             fontSize: 18,
@@ -164,32 +176,33 @@ class _SpecialOffersPageState extends State<SpecialOffersPage> {
         ),
         centerTitle: true,
       ),
-      body: Column(
+      body:_isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: AppResponsive.width(24)),
-            child: SpecialOffersSearchBarWidget( // Bu widgetni yaratishingiz kerak
+            child: SpecialOffersSearchBarWidget(
               controller: _searchController,
               onChanged: _filterOffers,
               onClear: _clearSearchInPage,
               onFilterTapped: () {
                 print("Filter special offers tapped from Page");
-                // Filter logikasini qo'shing
               },
             ),
           ),
           Expanded(
             child: _filteredOffers.isEmpty && _searchController.text.isNotEmpty
-                ? const SpecialOffersNotFoundWidget() // Bu widgetni yaratishingiz kerak
+                ? const SpecialOffersNotFoundWidget()
                 : GridView.builder(
               padding: EdgeInsets.all(
                 AppResponsive.width(24.0),
-              ).copyWith(top: AppResponsive.height(16)), // padding top o'zgartirildi
+              ).copyWith(top: AppResponsive.height(16)),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: AppResponsive.width(16),
                 mainAxisSpacing: AppResponsive.height(16),
-                childAspectRatio: 0.65, // Rasmga qarab sozlang
+                childAspectRatio: 0.65,
               ),
               itemCount: _filteredOffers.length,
               itemBuilder: (context, index) {
